@@ -160,33 +160,12 @@ Vagrant.configure("2") do |c|
 		 "jhs" =>    { 
        	  	      "private_ips" => ["10.0.2.15"]
                  }
-     },
-     "apache_hadoop"  =>    {
-	        "dir" => "/srv/hops",
      	        "hdfs" => {
                       "user" => "glassfish"
                  },
      	        "yarn" => {
 		      "user" => "glassfish"
 		 },
-		 "mr" => {
-		      "user" => "glassfish"
-		 },
-		 "rm" =>    { 
-       	  	      "private_ips" => ["10.0.2.15"]
-                 },
-		 "nn" =>    { 
-       	  	      "private_ips" => ["10.0.2.15"]
-                 },
-		 "dn" =>    { 
-       	  	      "private_ips" => ["10.0.2.15"]
-                 },
-		 "nm" =>    { 
-       	  	      "private_ips" => ["10.0.2.15"]
-                 },
-		 "jhs" =>    { 
-       	  	      "private_ips" => ["10.0.2.15"]
-                 },
       },
      "flink"  =>    {
           "dir" => "/srv/hops",

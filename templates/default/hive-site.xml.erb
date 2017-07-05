@@ -3843,7 +3843,7 @@
   </property>
   <property>
     <name>hive.server2.tez.sessions.per.default.queue</name>
-    <value>1</value>
+    <value><%= node['tez']['session_per_queue'] %></value>
     <description>
       A positive integer that determines the number of Tez sessions that should be
       launched on each of the queues specified by "hive.server2.tez.default.queues".
@@ -4437,7 +4437,7 @@
   </property>
   <property>
     <name>hive.execution.mode</name>
-    <value>container</value>
+    <value><%= node['hive2']['execution_mode'] %></value>
     <description>
       Expects one of [container, llap].
       Chooses whether query fragments will run in container or in llap
@@ -4867,7 +4867,7 @@
   </property>
   <property>
     <name>hive.llap.io.memory.size</name>
-    <value>1Gb</value>
+    <value/>
     <description>
       Expects a byte size value with unit (blank for bytes, kb, mb, gb, tb, pb).
       Maximum size for IO allocator or ORC low-level cache.
@@ -4931,7 +4931,7 @@
   </property>
   <property>
     <name>hive.llap.io.use.fileid.path</name>
-    <value>true</value>
+    <value>false</value>
     <description>
       Whether LLAP should use fileId (inode)-based path to ensure better consistency for the
       cases of file overwrites. This is supported on HDFS.
@@ -5040,7 +5040,7 @@
   </property>
   <property>
     <name>hive.llap.execution.mode</name>
-    <value>none</value>
+    <value><%= node['llap']['execution_mode'] %></value>
     <description>
       Expects one of [auto, none, all, map, only].
       Chooses whether query fragments will run in container or in llap
@@ -5143,7 +5143,7 @@
   </property>
   <property>
     <name>hive.llap.daemon.yarn.container.mb</name>
-    <value>-1</value>
+    <value/>
     <description>llap server yarn container size in MB. Used in LlapServiceDriver and package.py</description>
   </property>
   <property>
@@ -5204,7 +5204,7 @@
   </property>
   <property>
     <name>hive.llap.daemon.num.executors</name>
-    <value>4</value>
+    <value/>
     <description>
       Number of executors to use in LLAP daemon; essentially, the number of tasks that can be
       executed in parallel.
@@ -5212,7 +5212,7 @@
   </property>
   <property>
     <name>hive.llap.daemon.am-reporter.max.threads</name>
-    <value>4</value>
+    <value>2</value>
     <description>
       Maximum number of threads to be used for AM reporter. If this is lower than number of
       executors in llap daemon, it would be set to number of executors at runtime.
@@ -5225,12 +5225,12 @@
   </property>
   <property>
     <name>hive.llap.daemon.memory.per.instance.mb</name>
-    <value>4096</value>
+    <value/>
     <description>The total amount of memory to use for the executors inside LLAP (in megabytes).</description>
   </property>
   <property>
     <name>hive.llap.daemon.vcpus.per.instance</name>
-    <value>4</value>
+    <value/>
     <description>The total number of vcpus to use for the executors inside LLAP.</description>
   </property>
   <property>
@@ -5248,7 +5248,7 @@
   </property>
   <property>
     <name>hive.llap.daemon.service.hosts</name>
-    <value/>
+    <value>@<%= node['llap']['cluster_name'] %></value>
     <description>
       Explicitly specified hosts to use for LLAP scheduling. Useful for testing. By default,
       YARN registry is used.
@@ -5280,6 +5280,13 @@
       Minimum time after which a previously disabled node will be re-enabled for scheduling,
       in milliseconds. This may be modified by an exponential back-off if failures persist.
     </description>
+  </property>
+    <name>hive.llap.zk.registry.user</name>
+     <value><%= node['hive2']['user'] %></value>
+     <description>
+       In the LLAP ZooKeeper-based registry, specifies the username in the Zookeeper path.
+       This should be the hive user or whichever user is running the LLAP daemon.
+     </description>
   </property>
   <property>
     <name>hive.llap.task.scheduler.node.reenable.max.timeout.ms</name>

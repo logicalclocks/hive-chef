@@ -56,5 +56,6 @@ export TEZ_CONF_DIR=<%= node['tez']['conf_dir'] %>
 export TEZ_JARS=<%= node['tez']['base_dir'] %>
 export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$TEZ_CONF_DIR:$TEZ_JARS/*:$TEZ_JARS/lib/*
 
+export SLIDER_HOME=<%= node['slider']['base_dir'] %>
 # Folder containing extra libraries required for hive compilation/execution can be controlled by:
 # export HIVE_AUX_JARS_PATH=

@@ -6,7 +6,7 @@ After = syslog.target network.target remote-fs.target
 User = <%= node['hops']['hdfs']['user'] %>
 
 EnvironmentFile=/etc/environment_cleaner
-ExecStart = <%= node['hive2']['base_dir'] %>/bin/hive_cleaner --connection <%= @mgmd_endpoint %>:<%= node['ndb']['mgmd']['port'] %>
+ExecStart = <%= node['hive2']['base_dir'] %>/bin/hive_cleaner --connection <%= @mgmd_endpoint %>:<%= node['ndb']['mgmd']['port'] %> &> <%= node['hive2']['logs_dir'] %>/hivecleaner.log
 
 LimitNOFILE = 20000
 Type = simple

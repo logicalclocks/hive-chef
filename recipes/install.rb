@@ -17,13 +17,13 @@ end
 
 group node['hive2']['group'] do
   action :modify
-  members ["#{node['hive2']['user']}"]
+  members node['hive2']['user']
   append true
 end
 
-group node['kagent']['certs_dir'] do
+group node['kagent']['certs_group'] do
   action :modify
-  members ["#{node['hive2']['user']}"]
+  members node['hive2']['user']
   append true
 end
 

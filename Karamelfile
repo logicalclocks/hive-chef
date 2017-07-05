@@ -14,3 +14,6 @@ dependencies:
   - recipe: hive2::tez
     global:
       - hops::nm
+  - recipe: hive2::llap
+    global:
+      - hive2::tez

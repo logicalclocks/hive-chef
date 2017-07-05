@@ -22,6 +22,7 @@ recipe           "default", "Starts both a Hive metastore and server2 and tez"
 recipe           "metastore", "Starts  a Hive Metastore Server"
 recipe           "server2", "Starts  a Hive Server2"
 recipe           "tez", "Install Tez"
+recipe           "llap", "Deploy LLAP daemons"
 recipe           "purge", "Removes and deletes an installed Hive Server"
 
 attribute "java/jdk_version",

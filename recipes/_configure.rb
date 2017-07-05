@@ -80,7 +80,7 @@ cookbook_file "#{node['hive2']['base_dir']}/lib/mysql-connector-java-5.1.40-bin.
   mode "0644"
 end
 
-tmp_dirs   = [ node['hive2']['hopsfs_dir'] , node['hive2']['hopsfs_dir'] + "/warehouse", node['hive2']['scratch_dir'] ]
+tmp_dirs = ["/user/#{node['hive2']['user']}", node['hive2']['hopsfs_dir'] , node['hive2']['hopsfs_dir'] + "/warehouse"]
 for d in tmp_dirs
   hops_hdfs_directory d do
     action :create_as_superuser
@@ -91,14 +91,15 @@ for d in tmp_dirs
   end
 end
 
-# Directory for tez's staging dirs
-hops_hdfs_directory "/tmp/hive" do
+# Create hive scratchdir on hdfs
+hops_hdfs_directory node['hive2']['scratch_dir'] do
     action :create_as_superuser
     owner node['hive2']['user']
     group node['hive2']['group']
     mode "1777"
-    not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{d}"
-  end
+    not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{node['hive2']['scratch_dir']}"
+end
+
 
 file "#{node['hive2']['base_dir']}/conf/hive-site.xml" do
   action :delete

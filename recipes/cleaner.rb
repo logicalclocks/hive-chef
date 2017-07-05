@@ -20,7 +20,7 @@ bash 'extract-cleaner' do
                 set -e
                 tar zxf #{cached_package_filename} -C /tmp
                 mv /tmp/hivecleaner-#{node['hive2']['hive_cleaner']['version']}/hive_cleaner #{node['hive2']['base_dir']}/bin/
-                chown -R #{node['hops']['hdfs']['user']} #{node['hive2']['base_dir']}/bin/
+                chown #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hive2']['base_dir']}/bin/hive_cleaner
                 touch #{cleaner_downloaded}
         EOH
      not_if { ::File.exists?( "#{cleaner_downloaded}" ) }
@@ -78,3 +78,11 @@ end
 kagent_config service_name do
   action :systemd_reload
 end
+
+if node['kagent']['enabled'] == "true"
+   kagent_config service_name do
+     service service_name
+     log_file node['hive2']['logs_dir'] + "/hivecleaner.log"
+   end
+end
+

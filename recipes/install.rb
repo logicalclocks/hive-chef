@@ -22,6 +22,11 @@ group node['hive2']['group'] do
 end
 
 group node['kagent']['certs_group'] do
+  action :create
+  not_if "getent group #{node['kagent']['certs_group']}"
+end
+
+group node['kagent']['certs_group'] do
   action :modify
   members node['hive2']['user']
   append true

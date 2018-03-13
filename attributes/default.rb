@@ -33,7 +33,7 @@ default['hive2']['hive_cleaner']['pid_file']  = "/tmp/hc.pid"
 
 default['tez']['user']                    =  node['install']['user'].empty? ? "tez" : node['install']['user']
 default['tez']['group']                   =  node['hops']['group']
-default['tez']['version']                 = "0.8.5"
+default['tez']['version']                 = "0.9.1.0"
 default['tez']['url']                     = "#{node['download_url']}/apache-tez-#{node['tez']['version']}.tar.gz"
 default['tez']['dir']                     =  node['install']['dir'].empty? ? "/srv" : node['install']['dir']
 default['tez']['home']                    =  node['tez']['dir'] + "/apache-tez-" + node['tez']['version']

@@ -68,6 +68,11 @@ hops_hdfs_directory cached_package_filename do
 end
 
 # Create configuration file
+directory node['tez']['conf_dir'] do
+  owner node['tez']['user']
+  group node['tez']['group']
+end
+
 template "#{node['tez']['conf_dir']}/tez-site.xml" do
   source "tez-site.xml.erb"
   owner node['tez']['user']

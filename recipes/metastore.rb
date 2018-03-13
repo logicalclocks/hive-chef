@@ -33,9 +33,6 @@ hops_hdfs_directory node['hive2']['scratch_dir'] do
     not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{node['hive2']['scratch_dir']}"
 end
 
-
-
-
 service_name="hivemetastore"
 
 case node['platform_family']

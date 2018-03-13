@@ -1134,31 +1134,6 @@
     <description>Enable a metadata count at metastore startup for metrics.</description>
   </property>
   <property>
-    <name>hive.metastore.use.SSL</name>
-    <value>false</value>
-    <description>Set this to true for using SSL encryption in HMS server.</description>
-  </property>
-  <property>
-    <name>hive.metastore.keystore.path</name>
-    <value/>
-    <description>Metastore SSL certificate keystore location.</description>
-  </property>
-  <property>
-    <name>hive.metastore.keystore.password</name>
-    <value/>
-    <description>Metastore SSL certificate keystore password.</description>
-  </property>
-  <property>
-    <name>hive.metastore.truststore.path</name>
-    <value/>
-    <description>Metastore SSL certificate truststore location.</description>
-  </property>
-  <property>
-    <name>hive.metastore.truststore.password</name>
-    <value/>
-    <description>Metastore SSL certificate truststore password.</description>
-  </property>
-  <property>
     <name>hive.metadata.export.location</name>
     <value/>
     <description>
@@ -4120,7 +4095,7 @@
   </property>
   <property>
     <name>hive.server2.authentication</name>
-    <value>HOPS</value>
+    <value>CERTIFICATES</value>
     <description>
       Client authentication types.
         NONE: no authentication check
@@ -4129,7 +4104,7 @@
         CUSTOM: Custom authentication provider
                 (Use with property hive.server2.custom.authentication.class)
         PAM: Pluggable authentication module
-        CERTIFICATE: Authenticate using client certificate
+        CERTIFICATES: Authenticate using client certificate
         HOPS: Hops auth - certificate + username + password
         NOSASL:  Raw transport
     </description>
@@ -4183,31 +4158,6 @@
     <name>hive.server2.session.hook</name>
     <value/>
     <description/>
-  </property>
-  <property>
-    <name>hive.server2.use.SSL</name>
-    <value>true</value>
-    <description>Set this to true for using SSL encryption in HiveServer2.</description>
-  </property>
-  <property>
-    <name>hive.server2.keystore.path</name>
-    <value><%= node['kagent']['keystore_dir']%>/<%= node['fqdn'] %>__kstore.jks</value>
-    <description>SSL certificate keystore location.</description>
-  </property>
-  <property>
-    <name>hive.server2.keystore.password</name>
-    <value><%= node['hopsworks']['master']['password'] %></value>
-    <description>SSL certificate keystore password.</description>
-  </property>
-  <property>
-    <name>hive.server2.truststore.path</name>
-    <value><%= node['kagent']['keystore_dir'] %>/<%= node['fqdn'] %>__tstore.jks</value>
-    <description>SSL certificate truststore location.</description>
-  </property>
-  <property>
-    <name>hive.server2.truststore.password</name>
-    <value><%= node['hopsworks']['master']['password'] %></value>
-    <description>SSL certificate truststore password.</description>
   </property>
   <property>
     <name>hive.server2.map.fair.scheduler.queue</name>

@@ -59,3 +59,5 @@ end
 magic_shell_environment 'PATH' do
   value "$PATH:#{node['slider']['base_dir']}/bin"
 end
+
+

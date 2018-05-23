@@ -49,23 +49,10 @@ echo "Deleting SKEWED_STRING_LIST"
 
 # Deleting indexes without parent table
 "$NDB_SCRIPTS"/mysql-client.sh -N -e "use metastore;
-                                    SELECT s.LOCATION
+                                    DELETE s
                                     FROM SDS s
                                     WHERE s.SD_ID IN (SELECT t.SD_ID
                                                       FROM TBLS t LEFT JOIN IDXS i
                                                       ON t.TBL_ID = i.INDEX_TBL_ID
                                                       WHERE t.TBL_TYPE=\"INDEX_TABLE\"
-                                                      AND i.INDEX_ID IS NULL)" > /tmp/locations
-filename="/tmp/locations"
-skip=true
-while read -r line
-do
-  if [ $skip = true ]; then
-    skip=false
-  else
-    echo "Deleting index at $line"
-    $HADOOP_HOME/bin/hdfs dfs -rm -r "$line"
-  fi
-done < "$filename"
-rm /tmp/locations
-
+                                                      AND i.INDEX_ID IS NULL)"

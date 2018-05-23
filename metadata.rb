@@ -29,6 +29,10 @@ attribute "hive2/user",
           :description => "User to install/run as",
           :type => 'string'
 
+attribute "hive2/group",
+          :description => "User to install/run as",
+          :type => 'string'
+
 attribute "hive2/dir",
           :description => "base dir for installation",
           :type => 'string'
@@ -49,20 +53,12 @@ attribute "hive2/home",
           :dscription => "hive.home",
           :type => "string"
 
-attribute "hive2/keystore",
-          :dscription => "ivy.keystore",
-          :type => "string"
-
 attribute "hive2/mysql_user",
           :dscription => "mysql user account for hive",
           :type => "string"
 
 attribute "hive2/mysql_password",
           :dscription => "mysql user account for hive",
-          :type => "string"
-
-attribute "hive2/keystore_password",
-          :dscription => "ivy.keystore_password",
           :type => "string"
 
 attribute "hive2/metastore/private_ips",
@@ -79,6 +75,10 @@ attribute "hive2/server2/private_ips",
 
 attribute "hive2/metastore/port",
           :description => "metastore port",
+          :type => "string"
+
+attribute "hive2/scratch_dir",
+          :description => "Hive Tez Scratch dir location",
           :type => "string"
 
 attribute "hive2/conf/mapreduce_input_size",

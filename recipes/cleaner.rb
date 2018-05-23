@@ -1,50 +1,64 @@
 include_recipe "java"
 
+# Create the hiveCleaner directory if it doesn't exist
+directory node['hive2']['cleaner']['parent'] do
+  owner node['hive2']['user']
+  group node['hive2']['group']
+  action :create
+end
+
 # Download Hive cleaner
-package_url = "#{node['hive2']['hive_cleaner']['url']}"
+package_url = "#{node['hive2']['cleaner']['url']}"
 base_package_filename = File.basename(package_url)
 cached_package_filename = "/tmp/#{base_package_filename}"
 
 remote_file cached_package_filename do
   source package_url
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
+  owner node['hive2']['user']
+  group node['hive2']['group']
   mode "0644"
   action :create_if_missing
 end
 
-cleaner_downloaded = "#{node['hive2']['home']}/.cleaner_extracted_#{node['hive2']['hive_cleaner']['version']}"
-
+cleaner_downloaded = "#{node['hive2']['cleaner']['parent']}/.cleaner_extracted_#{node['hive2']['cleaner']['version']}"
 bash 'extract-cleaner' do
-        user "root"
-        group node['hops']['group']
-        code <<-EOH
-                set -e
-                tar zxf #{cached_package_filename} -C /tmp
-                mv /tmp/hivecleaner-#{node['hive2']['hive_cleaner']['version']}/hive_cleaner #{node['hive2']['base_dir']}/bin/
-                chown #{node['hops']['hdfs']['user']}:#{node['hops']['group']} #{node['hive2']['base_dir']}/bin/hive_cleaner
-                touch #{cleaner_downloaded}
-        EOH
-     not_if { ::File.exists?( "#{cleaner_downloaded}" ) }
+  user "root"
+  group node['hive2']['group']
+  code <<-EOH
+    set -e
+    tar zxf #{cached_package_filename} -C /tmp
+    mv /tmp/hivecleaner-#{node['hive2']['cleaner']['version']} #{node['hive2']['cleaner']['parent']}
+    chown -R #{node['hive2']['user']}:#{node['hive2']['group']} #{node['hive2']['cleaner']['home']}
+    touch #{cleaner_downloaded}
+  EOH
+  not_if { ::File.exists?( "#{cleaner_downloaded}" ) }
+end
+
+# Create the log directory
+directory "#{node['hive2']['cleaner']['home']}/logs" do
+  user node['hive2']['user']
+  group node['hive2']['group']
+  action :create
+end
+
+link node['hive2']['cleaner']['base_dir'] do
+  to node['hive2']['cleaner']['home']
 end
 
 #Add the wiper
-file "#{node['hive2']['base_dir']}/bin/wiper.sh" do
-  action :delete
-end
-
-template "#{node['hive2']['base_dir']}/bin/wiper.sh" do
+template "#{node['hive2']['cleaner']['parent']}/wiper.sh" do
   source "wiper.sh.erb"
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
+  owner node['hive2']['user']
+  group node['hive2']['group']
+  action :create
   mode 0755
 end
 
 ndb_mgmd_ip = private_recipe_ip("ndb", "mgmd")
-template "#{node['hive2']['base_dir']}/bin/start-hivecleaner.sh" do
+template "#{node['hive2']['cleaner']['parent']}/start-hivecleaner.sh" do
   source "start-hivecleaner.sh.erb"
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
+  owner node['hive2']['user']
+  group node['hive2']['group']
   variables({
       :mgmd_endpoint => ndb_mgmd_ip
   })
@@ -79,10 +93,11 @@ kagent_config service_name do
   action :systemd_reload
 end
 
+# TODO(fabio) restart hiveCleaner after upgrade.
 if node['kagent']['enabled'] == "true"
    kagent_config service_name do
-     service "Hive"     
-     log_file node['hive2']['logs_dir'] + "/hivecleaner.log"
+     service "Hive"
+     log_file node['hive2']['cleaner']['base_dir'] + "/logs/hivecleaner.log"
    end
 end
 

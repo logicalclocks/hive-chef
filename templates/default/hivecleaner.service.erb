@@ -3,10 +3,10 @@ Description = Hive cleaner
 After = syslog.target network.target remote-fs.target
 
 [Service]
-User = <%= node['hops']['hdfs']['user'] %>
+User = <%= node['hive2']['user'] %>
 
-PIDFile = <%= node['hive2']['hive_cleaner']['pid_file'] %>
-ExecStart = <%= node['hive2']['base_dir'] %>/bin/start-hivecleaner.sh
+PIDFile = <%= node['hive2']['cleaner']['pid_file'] %>
+ExecStart = <%= node['hive2']['cleaner']['parent'] %>/start-hivecleaner.sh
 
 LimitNOFILE = 20000
 Type = forking

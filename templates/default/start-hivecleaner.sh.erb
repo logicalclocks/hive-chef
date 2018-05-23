@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 
-export JAVA_HOME=<%= node['java']['java_home'] %>
-export LD_LIBRARY_PATH=<%= node['hops']['base_dir'] %>/lib/native:<%= node['java']['java_home'] %>/jre/lib/amd64/server:<%= node['java']['java_home'] %>/jre/lib/amd64
-CLASSPATH=$(<%= node['hops']['base_dir'] %>/bin/hadoop classpath --glob)
-export CLASSPATH
-
-PID_FILE=<%= node['hive2']['hive_cleaner']['pid_file'] %>
+PID_FILE=<%= node['hive2']['cleaner']['pid_file'] %>
 if [ -f "$PID_FILE" ] ; then
  PID=$(cat "$PID_FILE")
  kill -0 "$PID" > /dev/null 2>&1
@@ -15,6 +10,5 @@ if [ -f "$PID_FILE" ] ; then
  fi
 fi
 
-
-nohup <%= node['hive2']['base_dir'] %>/bin/hive_cleaner --connection <%= @mgmd_endpoint %> 2>&1 > <%= node['hive2']['logs_dir'] %>/hivecleaner.log &
+nohup <%= node['hive2']['cleaner']['base_dir'] %>/hive_cleaner --connection <%= @mgmd_endpoint %> 2>&1 > <%= node['hive2']['cleaner']['base_dir'] %>/logs/hivecleaner.log &
 echo $! > "$PID_FILE"

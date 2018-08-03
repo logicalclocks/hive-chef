@@ -12,6 +12,7 @@ user node['hive2']['user'] do
   action :create
   shell "/bin/bash"
   manage_home true
+  system true
   not_if "getent passwd #{node['hive2']['user']}"
 end
 

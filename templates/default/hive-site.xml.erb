@@ -4191,7 +4191,7 @@
   </property>
   <property>
     <name>hive.server2.keystore.path</name>
-    <value><%= node['kagent']['keystore_dir']%>/<%= node['hostname'] %>__kstore.jks</value>
+    <value><%= node['kagent']['keystore_dir']%>/<%= node['fqdn'] %>__kstore.jks</value>
     <description>SSL certificate keystore location.</description>
   </property>
   <property>
@@ -4201,7 +4201,7 @@
   </property>
   <property>
     <name>hive.server2.truststore.path</name>
-    <value><%= node['kagent']['keystore_dir'] %>/<%= node['hostname'] %>__tstore.jks</value>
+    <value><%= node['kagent']['keystore_dir'] %>/<%= node['fqdn'] %>__tstore.jks</value>
     <description>SSL certificate truststore location.</description>
   </property>
   <property>

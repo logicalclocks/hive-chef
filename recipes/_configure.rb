@@ -74,15 +74,25 @@ end
 # http://www.toadworld.com/platforms/oracle/w/wiki/11427.using-mysql-database-as-apache-hive-metastore-database
 #
 
-tmp_dirs = ["/user/#{node['hive2']['user']}", node['hive2']['hopsfs_dir'] , node['hive2']['hopsfs_dir'] + "/warehouse"]
+# Create hive apps and warehouse dirs
+tmp_dirs = [node['hive2']['hopsfs_dir'] , node['hive2']['hopsfs_dir'] + "/warehouse"]
 for d in tmp_dirs
   hops_hdfs_directory d do
     action :create_as_superuser
     owner node['hive2']['user']
     group node['hive2']['group']
-    mode "1751"
+    mode "1755" #warehouse must be readable&executable for SparSQL to read from Hive
     not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{d}"
   end
+end
+
+# Create hive user-dir on hdfs
+hops_hdfs_directory "/user/#{node['hive2']['user']}" do
+  action :create_as_superuser
+  owner node['hive2']['user']
+  group node['hive2']['group']
+  mode "1751"
+  not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{"/user/#{node['hive2']['user']}"}"
 end
 
 # Create hive scratchdir on hdfs
@@ -90,7 +100,7 @@ hops_hdfs_directory node['hive2']['scratch_dir'] do
     action :create_as_superuser
     owner node['hive2']['user']
     group node['hive2']['group']
-    mode "1777"
+    mode "0777" #scratchdir must be read/write/executable by everyone for SparkSQL user-jobs to write there
     not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{node['hive2']['scratch_dir']}"
 end
 

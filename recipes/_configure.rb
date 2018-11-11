@@ -81,7 +81,7 @@ for d in tmp_dirs
     action :create_as_superuser
     owner node['hive2']['user']
     group node['hive2']['group']
-    mode "1755" #warehouse must be readable&executable for SparSQL to read from Hive
+    mode "1755" #warehouse must be readable&executable for SparkSQL to read from Hive
     not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{d}"
   end
 end
@@ -100,7 +100,7 @@ hops_hdfs_directory node['hive2']['scratch_dir'] do
     action :create_as_superuser
     owner node['hive2']['user']
     group node['hive2']['group']
-    mode "0777" #scratchdir must be read/write/executable by everyone for SparkSQL user-jobs to write there
+    mode "1777" #scratchdir must be read/write/executable by everyone for SparkSQL user-jobs to write there
     not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{node['hive2']['scratch_dir']}"
 end
 

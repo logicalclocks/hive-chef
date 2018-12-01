@@ -4,7 +4,7 @@ dependencies:
       - kagent::install
   - recipe: hive2::default
     global:
-      - hops::nm
+      - hops::dn
   - recipe: hive2::metastore
     global:
       - hops::dn
@@ -13,7 +13,8 @@ dependencies:
       - hive2::metastore
   - recipe: hive2::tez
     global:
-      - hops::nm
+      - hive2::server2
+      - hops::dn 
   - recipe: hive2::llap
     global:
       - hive2::tez

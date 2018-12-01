@@ -3,30 +3,38 @@ include_recipe "hive2::_configure"
 private_ip = my_private_ip()
 public_ip = my_public_ip()
 
-bash 'setup-hive' do
-  user "root"
-  group node['hive2']['group']
-  code <<-EOH
-        #{node['ndb']['scripts_dir']}/mysql-client.sh -e \"CREATE DATABASE IF NOT EXISTS metastore CHARACTER SET latin1\"
-        #{node['ndb']['scripts_dir']}/mysql-client.sh -e \"GRANT ALL PRIVILEGES ON metastore.* TO '#{node['hive2']['mysql_user']}'@'#{private_ip}' IDENTIFIED BY '#{node['hive2']['mysql_password']}'\"
-        #{node['ndb']['scripts_dir']}/mysql-client.sh -e \"GRANT ALL PRIVILEGES ON metastore.* TO '#{node['hive2']['mysql_user']}'@'#{public_ip}' IDENTIFIED BY '#{node['hive2']['mysql_password']}'\"
-        #{node['ndb']['scripts_dir']}/mysql-client.sh -e \"GRANT ALL PRIVILEGES ON metastore.* TO '#{node['hive2']['mysql_user']}'@'#{node['hostname']}' IDENTIFIED BY '#{node['hive2']['mysql_password']}'\"
-        #{node['ndb']['scripts_dir']}/mysql-client.sh -e \"GRANT SELECT ON hops.hdfs_inodes TO '#{node['hive2']['mysql_user']}'@'#{private_ip}' IDENTIFIED BY '#{node['hive2']['mysql_password']}'\"
-        #{node['ndb']['scripts_dir']}/mysql-client.sh -e \"GRANT SELECT ON hops.hdfs_inodes TO '#{node['hive2']['mysql_user']}'@'#{public_ip}' IDENTIFIED BY '#{node['hive2']['mysql_password']}'\"
-        #{node['ndb']['scripts_dir']}/mysql-client.sh -e \"GRANT SELECT ON hops.hdfs_inodes TO '#{node['hive2']['mysql_user']}'@'#{node['hostname']}' IDENTIFIED BY '#{node['hive2']['mysql_password']}'\"
-        #{node['ndb']['scripts_dir']}/mysql-client.sh -e \"FLUSH PRIVILEGES\"
-        EOH
-  not_if "#{node['ndb']['scripts_dir']}/mysql-client.sh -e \"SHOW DATABASES\" | grep metastore"
+# Create hive apps and warehouse dirs
+tmp_dirs = [node['hive2']['hopsfs_dir'] , node['hive2']['hopsfs_dir'] + "/warehouse"]
+for d in tmp_dirs
+  hops_hdfs_directory d do
+    action :create_as_superuser
+    owner node['hive2']['user']
+    group node['hive2']['group']
+    mode "1755" #warehouse must be readable&executable for SparkSQL to read from Hive
+    not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{d}"
+  end
 end
 
-bash 'schematool' do
-  user node['hive2']['user']
+# Create hive user-dir on hdfs
+hops_hdfs_directory "/user/#{node['hive2']['user']}" do
+  action :create_as_superuser
+  owner node['hive2']['user']
   group node['hive2']['group']
-  code <<-EOH
-        #{node['hive2']['base_dir']}/bin/schematool -dbType mysql -initSchema
-        EOH
-  not_if "#{node['ndb']['scripts_dir']}/mysql-client.sh -e \"use metastore; SHOW TABLES;\" | grep -i SDS"
+  mode "1751"
+  not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{"/user/#{node['hive2']['user']}"}"
 end
+
+# Create hive scratchdir on hdfs
+hops_hdfs_directory node['hive2']['scratch_dir'] do
+    action :create_as_superuser
+    owner node['hive2']['user']
+    group node['hive2']['group']
+    mode "1777" #scratchdir must be read/write/executable by everyone for SparkSQL user-jobs to write there
+    not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{node['hive2']['scratch_dir']}"
+end
+
+
+
 
 service_name="hivemetastore"
 
@@ -69,4 +77,4 @@ if node['install']['upgrade'] == "true"
   kagent_config "#{service_name}" do
     action :systemd_reload
   end
-end  
+end

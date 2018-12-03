@@ -24,13 +24,13 @@ end
 hopsworks_endpoint =
 if node.attribute? "hopsworks"
   begin
-    if node['hopsworks'].attribute? "port"
+    if node['hopsworks'].attribute? "secure_port"
       hopsworks_endpoint = "https://" + private_recipe_ip("hopsworks", "default") + ":" + node['hopsworks']['secure_port']
     else
       hopsworks_endpoint = "https://" + private_recipe_ip("hopsworks", "default") + ":8181"
     end
   rescue
-    dashboard_endpoint =
+    dashboard_endpoint = ""
   end
 end
 

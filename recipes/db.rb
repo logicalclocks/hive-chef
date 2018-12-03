@@ -1,4 +1,5 @@
 include_recipe "hive2::_configure"
+include_recipe "java"
 
 private_ip = my_private_ip()
 

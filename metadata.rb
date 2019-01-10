@@ -25,14 +25,6 @@ recipe           "tez", "Install Tez"
 recipe           "llap", "Deploy LLAP daemons"
 recipe           "purge", "Removes and deletes an installed Hive Server"
 
-attribute "java/jdk_version",
-          :description =>  "Jdk version",
-          :type => 'string'
-
-attribute "java/install_flavor",
-          :description =>  "Oracle (default) or openjdk",
-          :type => 'string'
-
 attribute "hive2/user",
           :description => "User to install/run as",
           :type => 'string'

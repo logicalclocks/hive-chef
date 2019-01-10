@@ -28,7 +28,7 @@ default['hive2']['metastore']['port']       = "9083"
 default['hive2']['systemd']                 = "true"
 
 default['hive2']['hive_cleaner']['version']   = "0.1.2"
-default['hive2']['hive_cleaner']['url']       = "#{node['download_url']}/hivecleaner/#{node['platform']}/hivecleaner-#{node['hive2']['hive_cleaner']['version']}.tar.gz"
+default['hive2']['hive_cleaner']['url']       = "#{node['download_url']}/hivecleaner/#{node['platform_family']}/hivecleaner-#{node['hive2']['hive_cleaner']['version']}.tar.gz"
 default['hive2']['hive_cleaner']['pid_file']  = "/tmp/hc.pid"
 
 default['tez']['user']                    =  node['install']['user'].empty? ? "tez" : node['install']['user']

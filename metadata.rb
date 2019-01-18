@@ -92,3 +92,11 @@ attribute "install/dir",
 attribute "install/user",
           :description => "User to install the services as",
           :type => "string"
+
+attribute "tez/user",
+          :description => "User to install/run tez as",
+          :type => 'string'
+
+attribute "slider/user",
+          :description => "User to install/run slider as",
+          :type => 'string'

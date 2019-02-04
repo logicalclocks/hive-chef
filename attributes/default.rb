@@ -56,10 +56,3 @@ default['llap']['execution_mode']          = "auto"
 default['tez']['session_per_queue']     = 100
 
 default['hive2']['conf']['mapreduce_input_size']     = "134217728"
-
-#default.hive2.metastore.public_ips                   = ['']
-#default.hive2.metastore.private_ips                  = ['']
-#default.hive2.server2.public_ips                     = ['']
-#default.hive2.server2.private_ips                    = ['']
-#default.hive2['default']['public_ips']               = ['']
-#default.hive2['default']['private_ips']              = ['']

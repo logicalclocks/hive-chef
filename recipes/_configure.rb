@@ -65,8 +65,8 @@ end
 template "#{node['hive2']['base_dir']}/conf/hive-site.xml" do
   source "hive-site.xml.erb"
   owner node['hive2']['user']
-  group node['hive2']['group']
-  mode 0655
+  group node['hops']['secure_group']
+  mode 0650
   variables({
     :private_ip => my_ip,
     :hopsworks_endpoint => hopsworks_endpoint,
@@ -81,8 +81,8 @@ end
 template "#{node['hive2']['base_dir']}/conf/hiveserver2-site.xml" do
   source "hiveserver2-site.xml.erb"
   owner node['hive2']['user']
-  group node['hive2']['group']
-  mode 0655
+  group node['hops']['secure_group']
+  mode 0650
   action :create
 end
 

@@ -17,10 +17,12 @@ bash 'setup-hive' do
   not_if "#{node['ndb']['scripts_dir']}/mysql-client.sh -e \"SHOW DATABASES\" | grep metastore"
 end
 
+# Schematool needs to be run as root as it needs access to multiple filed owned by different groups.
+# In Chef the bash provider only uses the group specified. 
 # If the tables exist, then try the update
 bash 'schematool' do
-  user node['hive2']['user']
-  group node['hive2']['group']
+  user 'root'
+  group 'root'
   code <<-EOH
       #{node['hive2']['base_dir']}/bin/schematool -dbType mysql -upgradeSchema
   EOH
@@ -29,8 +31,8 @@ end
 
 # If the tables do not exist, then init the schema
 bash 'schematool' do
-  user node['hive2']['user']
-  group node['hive2']['group']
+  user 'root'
+  group 'root'
   code <<-EOH
       #{node['hive2']['base_dir']}/bin/schematool -dbType mysql -initSchema
   EOH

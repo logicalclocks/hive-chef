@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?><!--
    Licensed to the Apache Software Foundation (ASF) under one or more
+   j
    contributor license agreements.  See the NOTICE file distributed with
    this work for additional information regarding copyright ownership.
    The ASF licenses this file to You under the Apache License, Version 2.0
@@ -396,40 +397,9 @@
     <description>Maximum number of objects we will place in the hbase metastore catalog cache.  The objects will be divided up by types that we need to cache.</description>
   </property>
   <property>
-    <name>hive.metastore.hbase.aggregate.stats.cache.size</name>
-    <value>10000</value>
-    <description>Maximum number of aggregate stats nodes that we will place in the hbase metastore aggregate stats cache.</description>
-  </property>
-  <property>
     <name>hive.metastore.hbase.aggregate.stats.max.partitions</name>
     <value>10000</value>
     <description>Maximum number of partitions that are aggregated per cache node.</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggregate.stats.false.positive.probability</name>
-    <value>0.01</value>
-    <description>Maximum false positive probability for the Bloom Filter used in each aggregate stats cache node (default 1%).</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggregate.stats.max.variance</name>
-    <value>0.1</value>
-    <description>Maximum tolerable variance in number of partitions between a cached node and our request (default 10%).</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.cache.ttl</name>
-    <value>600s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
-      Number of seconds for a cached node to be active in the cache before they become stale.
-    </description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.cache.max.writer.wait</name>
-    <value>5000ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Number of milliseconds a writer will wait to acquire the writelock before giving up.
-    </description>
   </property>
   <property>
     <name>hive.metastore.hbase.cache.max.reader.wait</name>
@@ -438,26 +408,6 @@
       Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
       Number of milliseconds a reader will wait to acquire the readlock before giving up.
     </description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.cache.max.full</name>
-    <value>0.9</value>
-    <description>Maximum cache full % after which the cache cleaner thread kicks in.</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.cache.clean.until</name>
-    <value>0.8</value>
-    <description>The cleaner thread cleans until cache reaches this % full size.</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.connection.class</name>
-    <value>org.apache.hadoop.hive.metastore.hbase.VanillaHBaseConnection</value>
-    <description>Class used to connection to HBase</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggr.stats.cache.entries</name>
-    <value>10000</value>
-    <description>How many in stats objects to cache in memory</description>
   </property>
   <property>
     <name>hive.metastore.hbase.aggr.stats.memory.ttl</name>
@@ -473,14 +423,6 @@
     <description>
       Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
       How often the stats cache scans its HBase entries and looks for expired entries
-    </description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggr.stats.hbase.ttl</name>
-    <value>604800s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
-      Number of seconds stats entries live in HBase cache after they are created.  They may be invalided by updates or partition drops before this.  Default is one week.
     </description>
   </property>
   <property>
@@ -1283,16 +1225,6 @@
     <description>Comma separated list of keys from the configuration file not to convert to environment variables when envoking the script operator</description>
   </property>
   <property>
-    <name>hive.strict.checks.large.query</name>
-    <value>false</value>
-    <description>
-      Enabling strict large query checks disallows the following:
-        Orderby without limit.
-        No partition being picked up for a query against partitioned table.
-      Note that these checks currently do not consider data size, only the query pattern.
-    </description>
-  </property>
-  <property>
     <name>hive.strict.checks.type.safety</name>
     <value>true</value>
     <description>
@@ -2090,14 +2022,6 @@
     </description>
   </property>
   <property>
-    <name>hive.limit.query.max.table.partition</name>
-    <value>-1</value>
-    <description>
-      This controls how many partitions can be scanned for each partitioned table.
-      The default value "-1" means no limit. (DEPRECATED: Please use hive.metastore.limit.partition.request in the metastore instead.)
-    </description>
-  </property>
-  <property>
     <name>hive.hashtable.key.count.adjustment</name>
     <value>1.0</value>
     <description>Adjustment to mapjoin hashtable size derived from table and column statistics; the estimate of the number of keys is divided by this value. If the value is 0, statistics are not usedand hive.hashtable.initialCapacity is used instead.</description>
@@ -2262,16 +2186,6 @@
     <name>hive.exec.rowoffset</name>
     <value>false</value>
     <description>Whether to provide the row offset virtual column</description>
-  </property>
-  <property>
-    <name>hive.optimize.index.filter</name>
-    <value>false</value>
-    <description>Whether to enable automatic use of indexes</description>
-  </property>
-  <property>
-    <name>hive.optimize.index.autoupdate</name>
-    <value>false</value>
-    <description>Whether to update stale indexes automatically</description>
   </property>
   <property>
     <name>hive.optimize.ppd</name>
@@ -2494,26 +2408,6 @@
     <description>Minimum size (in bytes) of the inputs on which a compact index is automatically used.</description>
   </property>
   <property>
-    <name>hive.optimize.index.filter.compact.maxsize</name>
-    <value>-1</value>
-    <description>Maximum size (in bytes) of the inputs on which a compact index is automatically used.  A negative number is equivalent to infinity.</description>
-  </property>
-  <property>
-    <name>hive.index.compact.query.max.entries</name>
-    <value>10000000</value>
-    <description>The maximum number of index entries to read during a query that uses the compact index. Negative value is equivalent to infinity.</description>
-  </property>
-  <property>
-    <name>hive.index.compact.query.max.size</name>
-    <value>10737418240</value>
-    <description>The maximum number of bytes that a query using the compact index can read. Negative value is equivalent to infinity.</description>
-  </property>
-  <property>
-    <name>hive.index.compact.binary.search</name>
-    <value>true</value>
-    <description>Whether or not to use a binary search to find the entries in an index table that match the filter, where possible</description>
-  </property>
-  <property>
     <name>hive.stats.autogather</name>
     <value>true</value>
     <description>A flag to gather statistics (only basic) automatically during the INSERT OVERWRITE command.</description>
@@ -2542,11 +2436,6 @@
     <name>hive.stats.default.aggregator</name>
     <value/>
     <description>The Java class (implementing the StatsAggregator interface) that is used by default if hive.stats.dbclass is custom type.</description>
-  </property>
-  <property>
-    <name>hive.stats.atomic</name>
-    <value>false</value>
-    <description>whether to update metastore stats only if all stats are available</description>
   </property>
   <property>
     <name>hive.client.stats.counters</name>
@@ -2639,18 +2528,6 @@
       Average row size is computed from average column size of all columns in the row. In the absence
       of column statistics and for variable length complex columns like map, the average number of
       entries/values can be specified using this config.
-    </description>
-  </property>
-  <property>
-    <name>hive.stats.fetch.partition.stats</name>
-    <value>true</value>
-    <description>
-      Annotation of operator tree with statistics information requires partition level basic
-      statistics like number of rows, data size and file size. Partition statistics are fetched from
-      metastore. Fetching partition statistics for each needed partition can be expensive when the
-      number of partitions is high. This flag can be used to disable fetching of partition statistics
-      from metastore. When this flag is disabled, Hive will make calls to filesystem to get file sizes
-      and will estimate the number of rows from row schema.
     </description>
   </property>
   <property>
@@ -3194,11 +3071,6 @@
     <description>Whether archiving operations are permitted</description>
   </property>
   <property>
-    <name>hive.optimize.index.groupby</name>
-    <value>false</value>
-    <description>Whether to enable optimization of group-by queries using Aggregate indexes.</description>
-  </property>
-  <property>
     <name>hive.fetch.task.conversion</name>
     <value>more</value>
     <description>
@@ -3412,14 +3284,6 @@
     <description>internal variable</description>
   </property>
   <property>
-    <name>hive.index.compact.file.ignore.hdfs</name>
-    <value>false</value>
-    <description>
-      When true the HDFS location stored in the index file will be ignored at runtime.
-      If the data got moved or the name of the cluster got changed, the index data should still be usable.
-    </description>
-  </property>
-  <property>
     <name>hive.exim.uri.scheme.whitelist</name>
     <value>hdfs,pfile,file</value>
     <description>A comma separated list of acceptable URI schemes for import and export.</description>
@@ -3452,17 +3316,6 @@
     <description>
       should rework the mapred work or not.
       This is first introduced by SymlinkTextInputFormat to replace symlink files with real paths at compile time.
-    </description>
-  </property>
-  <property>
-    <name>hive.exec.concatenate.check.index</name>
-    <value>true</value>
-    <description>
-      If this is set to true, Hive will throw error when doing
-      'alter table tbl_name [partSpec] concatenate' on a table/partition
-      that has indexes on it. The reason the user want to set this to true
-      is because it can help user to avoid handling all index drop, recreation,
-      rebuild work. This is very helpful for tables with thousands of partitions.
     </description>
   </property>
   <property>
@@ -3598,15 +3451,6 @@
     <description>
       Where to insert into multilevel directories like
       "insert directory '/HIVEFT25686/chinna/' from table"
-    </description>
-  </property>
-  <property>
-    <name>hive.warehouse.subdir.inherit.perms</name>
-    <value>true</value>
-    <description>
-      Set this to false if the table directories should be created
-      with the permissions derived from dfs umask instead of
-      inheriting the permission of the warehouse or database directory.
     </description>
   </property>
   <property>

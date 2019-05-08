@@ -65,6 +65,12 @@ template "#{node['hive2']['cleaner']['parent']}/start-hivecleaner.sh" do
   mode 0775
 end
 
+
+
+deps = ""
+if exists_local("ndb", "mysqld") 
+  deps = "mysqld.service"
+end  
 service_name="hivecleaner"
 case node['platform_family']
 when "rhel"
@@ -84,6 +90,9 @@ template systemd_script do
   owner "root"
   group "root"
   mode 0754
+  variables({
+            :deps => deps
+           })
   if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => service_name)
   end

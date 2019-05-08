@@ -16,7 +16,7 @@ for d in tmp_dirs
 end
 
 bash "set_warehouse_storage_type" do
-  user node['hops']['hdfs']['user'] 
+  user node['hops']['hdfs']['user']
   group node['hops']['group']
   code <<-EOH
     #{node['hops']['bin_dir']}/hdfs storagepolicies -setStoragePolicy -path #{node['hive2']['hopsfs_dir']}/warehouse -policy DB
@@ -42,8 +42,12 @@ hops_hdfs_directory node['hive2']['scratch_dir'] do
     not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{node['hive2']['scratch_dir']}"
 end
 
-service_name="hivemetastore"
+deps = ""
+if exists_local("ndb", "mysqld")
+  deps = "mysqld.service"
+end
 
+service_name="hivemetastore"
 case node['platform_family']
 when "rhel"
   systemd_script = "/usr/lib/systemd/system/#{service_name}.service"
@@ -62,6 +66,9 @@ template systemd_script do
   owner "root"
   group "root"
   mode 0754
+  variables({
+            :deps => deps
+           })
   if node['services']['enabled'] == "true"
     notifies :enable, resources(:service => service_name)
   end

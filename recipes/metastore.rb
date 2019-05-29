@@ -16,9 +16,10 @@ for d in tmp_dirs
 end
 
 bash "set_warehouse_storage_type" do
-  owner node['hive2']['user']
+  user node['hive2']['user']
+  group node['hive2']['group']
   code <<-EOH
-    #{node['hops']['bin_dir']}/hdfs storagepolicies -setStoragePolicy -path #{node['hive2']['hopsfs_dir']}/warehouse -policy DB 
+    #{node['hops']['bin_dir']}/hdfs storagepolicies -setStoragePolicy -path #{node['hive2']['hopsfs_dir']}/warehouse -policy DB
   EOH
   action :run
 end

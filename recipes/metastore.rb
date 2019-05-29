@@ -15,6 +15,14 @@ for d in tmp_dirs
   end
 end
 
+bash "set_warehouse_storage_type" do
+  owner node['hive2']['user']
+  code <<-EOH
+    #{node['hops']['bin_dir']}/hdfs storagepolicies -setStoragePolicy -path #{node['hive2']['hopsfs_dir']}/warehouse -policy DB 
+  EOH
+  action :run
+end
+
 # Create hive user-dir on hdfs
 hops_hdfs_directory "/user/#{node['hive2']['user']}" do
   action :create_as_superuser

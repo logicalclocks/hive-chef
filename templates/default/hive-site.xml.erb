@@ -397,40 +397,6 @@
     <description>Maximum number of objects we will place in the hbase metastore catalog cache.  The objects will be divided up by types that we need to cache.</description>
   </property>
   <property>
-    <name>hive.metastore.hbase.aggregate.stats.max.partitions</name>
-    <value>10000</value>
-    <description>Maximum number of partitions that are aggregated per cache node.</description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.cache.max.reader.wait</name>
-    <value>1000ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Number of milliseconds a reader will wait to acquire the readlock before giving up.
-    </description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggr.stats.memory.ttl</name>
-    <value>60s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
-      Number of seconds stats objects live in memory after they are read from HBase.
-    </description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.aggr.stats.invalidator.frequency</name>
-    <value>5s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is sec if not specified.
-      How often the stats cache scans its HBase entries and looks for expired entries
-    </description>
-  </property>
-  <property>
-    <name>hive.metastore.hbase.file.metadata.threads</name>
-    <value>1</value>
-    <description>Number of threads to use to read file metadata in background to cache it.</description>
-  </property>
-  <property>
     <name>hive.metastore.connect.retries</name>
     <value>3</value>
     <description>Number of retries while opening a connection to metastore</description>

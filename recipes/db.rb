@@ -39,4 +39,10 @@ bash 'schematool' do
   not_if "#{node['ndb']['scripts_dir']}/mysql-client.sh -e \"use metastore; SHOW TABLES;\" | grep -i SDS"
 end
 
-
+# Schematool will create a hive.log owned by root
+# HM/HS2 won't be able to write on that log
+file "#{node['hive2']['logs_dir']}/hive.log" do
+  mode '0755'
+  owner node['hive2']['user']
+  group node['hive2']['group']
+end

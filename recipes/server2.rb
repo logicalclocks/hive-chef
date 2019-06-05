@@ -2,12 +2,9 @@ include_recipe "hive2::_configure"
 
 deps = ""
 if exists_local("ndb", "mysqld") 
-  deps = "mysqld.service"
+  deps = "mysqld.service "
 end  
-if exists_local("hive2", "server2")
-  if exists_local("ndb", "mysqld")
-    deps += ""
-  end
+if exists_local("hive2", "metastore") || exists_local("hive2", "default")
   deps += "hivemetastore.service"
 end
 service_name="hiveserver2"

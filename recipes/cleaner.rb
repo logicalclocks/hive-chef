@@ -65,12 +65,11 @@ template "#{node['hive2']['cleaner']['parent']}/start-hivecleaner.sh" do
   mode 0775
 end
 
-
-
 deps = ""
 if exists_local("ndb", "mysqld") 
   deps = "mysqld.service"
 end  
+
 service_name="hivecleaner"
 case node['platform_family']
 when "rhel"

@@ -42,6 +42,15 @@ hops_hdfs_directory node['hive2']['scratch_dir'] do
     not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{node['hive2']['scratch_dir']}"
 end
 
+#Add the wiper
+template "#{node['hive2']['cleaner']['parent']}/wiper.sh" do
+  source "wiper.sh.erb"
+  owner node['hive2']['user']
+  group node['hive2']['group']
+  action :create
+  mode 0700
+end
+
 deps = ""
 if exists_local("ndb", "mysqld")
   deps = "mysqld.service"

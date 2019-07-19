@@ -11,7 +11,6 @@ Recipe to install HopsHive
 
 ```
 # systemctl start/stop/restart hivemetastore
-# systemctl start/stop/restart hivecleaner
 # systemctl start/stop/restart hiveserver2
 ```
 
@@ -19,6 +18,4 @@ Recipe to install HopsHive
 ```
 # journalctl -u hivemetastore -r
 # journalctl -u hiveserver2 -r
-# journalctl -u hivecleaner -r
 ```
-

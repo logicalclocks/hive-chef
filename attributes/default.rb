@@ -27,14 +27,6 @@ default['hive2']['systemd']                 = "true"
 
 default['hive2']['hopsworks']['port']         = "8080"
 
-default['hive2']['cleaner']['version']           = "0.2.0"
-default['hive2']['cleaner']['url']               = "#{node['download_url']}/hivecleaner/#{node['platform']}/hivecleaner-#{node['hive2']['cleaner']['version']}.tar.gz"
-default['hive2']['cleaner']['pid_file']          = "/tmp/hc.pid"
-default['hive2']['cleaner']['dir']               = node['install']['dir'].empty? ? "/srv" : node['install']['dir']
-default['hive2']['cleaner']['parent']            = node['hive2']['cleaner']['dir'] + "/hivecleaner"
-default['hive2']['cleaner']['base_dir']          = node['hive2']['cleaner']['dir'] + "/hivecleaner/hivecleaner"
-default['hive2']['cleaner']['home']              = node['hive2']['cleaner']['parent'] + "/hivecleaner-#{node['hive2']['cleaner']['version']}"
-
 default['tez']['user']                    =  node['install']['user'].empty? ? "tez" : node['install']['user']
 default['tez']['group']                   =  node['hops']['group']
 default['tez']['version']                 = "0.9.1.1"

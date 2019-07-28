@@ -67,7 +67,7 @@ bash 'extract-hive' do
 end
 
 # Install the mysql-jdbc connector
-remote_file "#{node['hive2']['base_dir']}/lib/mysql-connector-java-#{node['hive2']['mysql_connector_version']}-bin.jar" do
+remote_file "#{node['hive2']['lib_dir']}/mysql-connector-java-#{node['hive2']['mysql_connector_version']}-bin.jar" do
   source node['hive2']['mysql_connector_url']
   checksum node['hive2']['mysql_connector_checksum']
   owner node['hive2']['user']
@@ -83,4 +83,14 @@ remote_file "#{node['hive2']['base_dir']}/lib/hudi-hadoop-mr-bundle-#{node['hive
   group node['hive2']['group']
   mode '0644'
   action :create_if_missing
+end
+
+# Install the prometheus JMX exporter
+base_package_filename = File.basename(node['hive2']['jmx']['prometheus_exporter']['url'])
+remote_file "#{node['hive2']['lib_dir']}/#{base_package_filename}" do
+  source node['hive2']['jmx']['prometheus_exporter']['url']
+  owner node['hive2']['user']
+  group node['hive2']['group']
+  mode '0755'
+  action :create
 end

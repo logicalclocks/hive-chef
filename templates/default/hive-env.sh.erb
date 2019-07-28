@@ -47,15 +47,18 @@
 # Set HADOOP_HOME to point to a specific hadoop install directory
 export JAVA_HOME=<%= node['java']['java_home'] %>
 export HADOOP_HOME=<%= node['hops']['base_dir'] %>
-export HADOOP_CONF_DIR=<%= node['hops']['base_dir'] %>/etc/hadoop
+export HADOOP_CONF_DIR=<%= node['hops']['conf_dir'] %>
 
 # Hive Configuration Directory can be controlled by:
-export HIVE_CONF_DIR=<%= node['hive2']['base_dir'] %>/conf
+export HIVE_CONF_DIR=<%= node['hive2']['conf_dir'] %>
 
 # Tez environment configuration
 export TEZ_CONF_DIR=<%= node['tez']['conf_dir'] %>
 export TEZ_JARS=<%= node['tez']['base_dir'] %>
 export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$TEZ_CONF_DIR:$TEZ_JARS/*:$TEZ_JARS/lib/*
+
+export HIVESERVER2_HADOOP_OPTS=-javaagent:<%= node['hive2']['lib_dir'] %>/jmx_prometheus_javaagent-<%= node['hive2']['jmx']['prometheus_exporter']['version'] %>.jar=<%= node['hive2']['hs2']['metrics_port'] %>:'$HIVE_CONF_DIR'/hiveserver2.yaml
+export HIVEMETASTORE_HADOOP_OPTS=-javaagent:<%= node['hive2']['lib_dir'] %>/jmx_prometheus_javaagent-<%= node['hive2']['jmx']['prometheus_exporter']['version'] %>.jar=<%= node['hive2']['hm']['metrics_port'] %>:'$HIVE_CONF_DIR'/hivemetastore.yaml
 
 export SLIDER_HOME=<%= node['slider']['base_dir'] %>
 # Folder containing extra libraries required for hive compilation/execution can be controlled by:

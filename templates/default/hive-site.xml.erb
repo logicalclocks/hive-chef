@@ -1033,7 +1033,7 @@
   </property>
   <property>
     <name>hive.metastore.metrics.enabled</name>
-    <value>false</value>
+    <value>true</value>
     <description>Enable metrics on the metastore.</description>
   </property>
   <property>
@@ -3364,21 +3364,8 @@
   </property>
   <property>
     <name>hive.service.metrics.reporter</name>
-    <value>JSON_FILE, JMX</value>
+    <value>JMX</value>
     <description>Reporter type for metric class org.apache.hadoop.hive.common.metrics.metrics2.CodahaleMetrics, comma separated list of JMX, CONSOLE, JSON_FILE, HADOOP2</description>
-  </property>
-  <property>
-    <name>hive.service.metrics.file.location</name>
-    <value>/tmp/report.json</value>
-    <description>For metric class org.apache.hadoop.hive.common.metrics.metrics2.CodahaleMetrics JSON_FILE reporter, the location of local JSON metrics file.  This file will get overwritten at every interval.</description>
-  </property>
-  <property>
-    <name>hive.service.metrics.file.frequency</name>
-    <value>5s</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      For metric class org.apache.hadoop.hive.common.metrics.metrics2.CodahaleMetrics JSON_FILE reporter, the frequency of updating JSON metrics file.
-    </description>
   </property>
   <property>
     <name>hive.service.metrics.hadoop2.frequency</name>
@@ -3712,7 +3699,7 @@
   </property>
   <property>
     <name>hive.server2.metrics.enabled</name>
-    <value>false</value>
+    <value>true</value>
     <description>Enable metrics on the HiveServer2.</description>
   </property>
   <property>

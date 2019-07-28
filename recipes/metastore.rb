@@ -49,6 +49,14 @@ template "#{node['hive2']['base_dir']}/bin/wiper.sh" do
   group node['hive2']['group']
   action :create
   mode 0700
+
+# Template HiveServer2 for the JMX prometheus exporter
+cookbook_file "#{node['hive2']['conf_dir']}/hivemetastore.yaml" do
+  source 'hivemetastore.yaml'
+  owner node['hive2']['user']  
+  group node['hive2']['group'] 
+  mode '0755'
+  action :create
 end
 
 deps = ""

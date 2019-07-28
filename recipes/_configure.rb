@@ -14,7 +14,7 @@ directory "#{node['hive2']['logs_dir']}" do
   action :create
 end
 
-template "#{node['hive2']['base_dir']}/conf/hive-log4j2.properties" do
+template "#{node['hive2']['conf_dir']}/hive-log4j2.properties" do
   source "hive-log4j2.properties.erb"
   owner node['hive2']['user']
   group node['hive2']['group']
@@ -62,7 +62,7 @@ end
 # http://www.toadworld.com/platforms/oracle/w/wiki/11427.using-mysql-database-as-apache-hive-metastore-database
 #
 
-template "#{node['hive2']['base_dir']}/conf/hive-site.xml" do
+template "#{node['hive2']['conf_dir']}/hive-site.xml" do
   source "hive-site.xml.erb"
   owner node['hive2']['user']
   group node['hops']['secure_group']
@@ -78,7 +78,7 @@ template "#{node['hive2']['base_dir']}/conf/hive-site.xml" do
   action :create
 end
 
-template "#{node['hive2']['base_dir']}/conf/hiveserver2-site.xml" do
+template "#{node['hive2']['conf_dir']}/hiveserver2-site.xml" do
   source "hiveserver2-site.xml.erb"
   owner node['hive2']['user']
   group node['hops']['secure_group']
@@ -86,7 +86,7 @@ template "#{node['hive2']['base_dir']}/conf/hiveserver2-site.xml" do
   action :create
 end
 
-template "#{node['hive2']['base_dir']}/conf/hive-env.sh" do
+template "#{node['hive2']['conf_dir']}/hive-env.sh" do
   source "hive-env.sh.erb"
   owner node['hive2']['user']
   group node['hive2']['group']

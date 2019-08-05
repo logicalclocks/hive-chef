@@ -1,5 +1,5 @@
 rules:
-  - pattern: 'metrics<name=(\w*)><>(.*): (\d+)'
+  - pattern: 'metrics<name=([\w\.\-]*)><>(.*): (\d+)'
     name: hs2_$1
     value: $3
     labels:

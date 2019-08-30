@@ -75,3 +75,12 @@ remote_file "#{node['hive2']['base_dir']}/lib/mysql-connector-java-#{node['hive2
   mode '0755'
   action :create_if_missing
 end
+
+# Install the hudi-hadoop-mr-bundle
+remote_file "#{node['hive2']['base_dir']}/lib/hudi-hadoop-mr-bundle-#{node['hive2']['hudi_version']}.jar" do
+  source node['hive2']['hudi_hadoop_mr_bundle_url']
+  owner node['hive2']['user']
+  group node['hive2']['group']
+  mode '0644'
+  action :create_if_missing
+end

@@ -22,6 +22,7 @@ default['hive2']['mysql_connector_version'] = "5.1.29"
 default['hive2']['mysql_connector_url']     = "#{node['download_url']}/mysql-connector-java-#{node['hive2']['mysql_connector_version']}-bin.jar"
 default['hive2']['mysql_connector_checksum'] = "32ddcf6d2613c79595f4f3fda01efb8620ea2bf50df954215c175ebec4cc67b9"
 
+
 default['hive2']['metastore']['port']       = "9083"
 default['hive2']['systemd']                 = "true"
 
@@ -52,3 +53,6 @@ default['llap']['execution_mode']          = "none"
 default['tez']['session_per_queue']     = 100
 
 default['hive2']['conf']['mapreduce_input_size']     = "134217728"
+
+default['hive2']['hudi_version']              = "0.5.0-SNAPSHOT"
+default['hive2']['hudi_hadoop_mr_bundle_url']     = "#{node['download_url']}/hudi/#{node['hive2']['hudi_version']}/hudi-hadoop-mr-bundle-#{node['hive2']['hudi_version']}.jar"

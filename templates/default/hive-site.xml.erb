@@ -1127,7 +1127,7 @@
   </property>
   <property>
     <name>hive.aux.jars.path</name>
-    <value/>
+    <value><%= node['hive2']['base_dir'] %>/lib/hudi-hadoop-mr-bundle-<%= node['hive2']['hudi_version'] %></value>
     <description>The location of the plugin jars that contain implementations of user defined functions and serdes.</description>
   </property>
   <property>

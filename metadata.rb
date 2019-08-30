@@ -100,3 +100,11 @@ attribute "tez/user",
 attribute "slider/user",
           :description => "User to install/run slider as",
           :type => 'string'
+
+attribute "hive2/hudi_hadoop_mr_bundle_url",
+          :description => "URL for downloading hudi bundle jar to put in /lib of Hive installation",
+          :type => 'string'
+
+attribute "hive2/hudi_version",
+          :description => "the hudi version",
+          :type => "string"

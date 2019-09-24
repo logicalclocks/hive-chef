@@ -2,6 +2,7 @@
 group node['slider']['group'] do
   action :create
   not_if "getent group #{node['slider']['group']}"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 user node['slider']['user'] do
@@ -10,12 +11,14 @@ user node['slider']['user'] do
   shell "/bin/bash"
   manage_home true
   not_if "getent passwd #{node['slider']['user']}"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 group node['slider']['group'] do
   action :modify
   members ["#{node['slider']['user']}"]
   append true
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 package_url = "#{node['slider']['url']}"

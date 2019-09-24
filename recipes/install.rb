@@ -5,6 +5,7 @@ my_ip = my_private_ip()
 group node['hive2']['group'] do
   action :create
   not_if "getent group #{node['hive2']['group']}"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 user node['hive2']['user'] do
@@ -14,23 +15,27 @@ user node['hive2']['user'] do
   manage_home true
   system true
   not_if "getent passwd #{node['hive2']['user']}"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 group node['hive2']['group'] do
   action :modify
   members node['hive2']['user']
   append true
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 group node['kagent']['certs_group'] do
   action :create
   not_if "getent group #{node['kagent']['certs_group']}"
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 group node['kagent']['certs_group'] do
   action :modify
   members node['hive2']['user']
   append true
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
 package_url = "#{node['hive2']['url']}"

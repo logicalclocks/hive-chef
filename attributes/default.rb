@@ -5,7 +5,7 @@ include_attribute "kzookeeper"
 
 default['hive2']['user']                    = node['install']['user'].empty? ? "hive" : node['install']['user']
 default['hive2']['group']                   = node['install']['user'].empty? ? node['hops']['group'] : node['install']['user']
-default['hive2']['version']                 = "3.0.0.2"
+default['hive2']['version']                 = "3.0.0.3-SNAPSHOT"
 default['hive2']['url']                     = "#{node['download_url']}/apache-hive-#{node['hive2']['version']}-bin.tar.gz"
 default['hive2']['port']                    = "9084"
 default['hive2']['portssl']                 = "9085"
@@ -32,7 +32,7 @@ default['hive2']['hopsworks']['port']         = "8080"
 
 default['tez']['user']                    =  node['install']['user'].empty? ? "tez" : node['install']['user']
 default['tez']['group']                   =  node['hops']['group']
-default['tez']['version']                 = "0.9.1.1"
+default['tez']['version']                 = "0.9.1.2"
 default['tez']['url']                     = "#{node['download_url']}/apache-tez-#{node['tez']['version']}.tar.gz"
 default['tez']['dir']                     =  node['install']['dir'].empty? ? "/srv" : node['install']['dir']
 default['tez']['home']                    =  node['tez']['dir'] + "/apache-tez-" + node['tez']['version']

@@ -81,6 +81,15 @@ remote_file "#{node['hive2']['lib_dir']}/mysql-connector-java-#{node['hive2']['m
   action :create_if_missing
 end
 
+# Delete old jars during upgrades
+bash 'cleanup_old_jars' do
+        user "root"
+        code <<-EOH
+                set -e
+                rm -f #{node['hive2']['base_dir']}/lib/hudi-*
+        EOH
+end
+
 # Install the hudi-hadoop-mr-bundle
 remote_file "#{node['hive2']['base_dir']}/lib/hudi-hadoop-mr-bundle-#{node['hive2']['hudi_version']}.jar" do
   source node['hive2']['hudi_hadoop_mr_bundle_url']

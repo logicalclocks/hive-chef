@@ -80,7 +80,7 @@ directory "#{node['hive2']['home']}/hopsworks-jars/" do
   only_if { ::Dir.exist?("#{node['hive2']['home']}/hopsworks-jars/") }
 end
 
-diectory "#{node['hive2']['home']}/hopsworks-jars/" do 
+directory "#{node['hive2']['home']}/hopsworks-jars/" do 
   owner node['hive2']['user']
   group node['hive2']['group']
   mode "0644"

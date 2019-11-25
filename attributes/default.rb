@@ -15,6 +15,7 @@ default['hive2']['base_dir']                = node['hive2']['dir'] + "/apache-hi
 default['hive2']['logs_dir']                = node['hive2']['base_dir'] + "/logs"
 default['hive2']['conf_dir']                = node['hive2']['base_dir'] + "/conf"
 default['hive2']['lib_dir']                 = node['hive2']['base_dir'] + "/lib"
+default['hive2']['hopsworks_jars']          = node['hive2']['base_dir'] + "/hopsworks-jars"
 default['hive2']['hopsfs_dir']              = "/apps/hive"
 default['hive2']['scratch_dir']             = "/tmp/hive"
 

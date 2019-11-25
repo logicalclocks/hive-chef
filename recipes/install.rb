@@ -74,28 +74,28 @@ end
 
 # To make sure that all the custom jars that do not come with the Hive distribution are correctly updated
 # during installation/upgrades, we create a separate directory which is cleaned up every time we run this recipe.
-directory "#{node['hive2']['home']}/hopsworks-jars/" do 
+directory "#{node['hive2']['hopsworks_jars']}" do 
   recursive true
   action :delete
-  only_if { ::Dir.exist?("#{node['hive2']['home']}/hopsworks-jars/") }
+  only_if { ::Dir.exist?("#{node['hive2']['hopsworks_jars']}") }
 end
 
-directory "#{node['hive2']['home']}/hopsworks-jars/" do 
+directory "#{node['hive2']['hopsworks_jars']}" do 
   owner node['hive2']['user']
   group node['hive2']['group']
-  mode "0644"
+  mode "0755"
   action :create
 end
 
 # We create a symlink from within hive/lib that points to hive/hopsworks-jars so that all the custom libraries 
 # are transparently available without the need of fixing the classpaths.
 link "#{node['hive2']['lib_dir']}/hopsworks-jars" do
-  to "#{node['hive2']['home']}/hopsworks-jars"
+  to "#{node['hive2']['hopsworks_jars']}"
   link_type :symbolic
 end
 
 # Install the mysql-jdbc connector
-remote_file "#{node['hive2']['home']}/hopsworks-jars/mysql-connector-java-#{node['hive2']['mysql_connector_version']}-bin.jar" do
+remote_file "#{node['hive2']['hopsworks_jars']}/mysql-connector-java-#{node['hive2']['mysql_connector_version']}-bin.jar" do
   source node['hive2']['mysql_connector_url']
   checksum node['hive2']['mysql_connector_checksum']
   owner node['hive2']['user']
@@ -105,7 +105,7 @@ remote_file "#{node['hive2']['home']}/hopsworks-jars/mysql-connector-java-#{node
 end
 
 # Install the hudi-hadoop-mr-bundle
-remote_file "#{node['hive2']['home']}/hopsworks-jars/hudi-hadoop-mr-bundle-#{node['hive2']['hudi_version']}.jar" do
+remote_file "#{node['hive2']['hopsworks_jars']}/hudi-hadoop-mr-bundle-#{node['hive2']['hudi_version']}.jar" do
   source node['hive2']['hudi_hadoop_mr_bundle_url']
   owner node['hive2']['user']
   group node['hive2']['group']
@@ -115,7 +115,7 @@ end
 
 # Install the prometheus JMX exporter
 base_package_filename = File.basename(node['hive2']['jmx']['prometheus_exporter']['url'])
-remote_file "#{node['hive2']['home']}/hopsworks-jars/#{base_package_filename}" do
+remote_file "#{node['hive2']['hopsworks_jars']}/#{base_package_filename}" do
   source node['hive2']['jmx']['prometheus_exporter']['url']
   owner node['hive2']['user']
   group node['hive2']['group']

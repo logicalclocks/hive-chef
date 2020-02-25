@@ -2,9 +2,10 @@ include_recipe "java"
 
 my_ip = my_private_ip()
 
-group node['hive2']['group'] do
+group node['hops']['group'] do
+  gid node['hops']['group_id']
   action :create
-  not_if "getent group #{node['hive2']['group']}"
+  not_if "getent group #{node['hops']['group']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
@@ -18,7 +19,7 @@ user node['hive2']['user'] do
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
-group node['hive2']['group'] do
+group node['hops']['group'] do
   action :modify
   members node['hive2']['user']
   append true
@@ -54,7 +55,7 @@ hive_downloaded = "#{node['hive2']['home']}/.hive_extracted_#{node['hive2']['ver
 
 bash 'extract-hive' do
         user "root"
-        group node['hive2']['group']
+        group node['hops']['group']
         code <<-EOH
                 set -e
                 tar zxf #{cached_package_filename} -C /tmp
@@ -62,11 +63,11 @@ bash 'extract-hive' do
                 # remove old symbolic link, if any
                 rm -f #{node['hive2']['base_dir']}
                 ln -s #{node['hive2']['home']} #{node['hive2']['base_dir']}
-                chown -R #{node['hive2']['user']}:#{node['hive2']['group']} #{node['hive2']['home']}
+                chown -R #{node['hive2']['user']}:#{node['hops']['group']} #{node['hive2']['home']}
                 chmod 770 #{node['hive2']['home']}
-                chown -R #{node['hive2']['user']}:#{node['hive2']['group']} #{node['hive2']['base_dir']}
+                chown -R #{node['hive2']['user']}:#{node['hops']['group']} #{node['hive2']['base_dir']}
                 touch #{hive_downloaded}
-                chown -R #{node['hive2']['user']}:#{node['hive2']['group']} #{hive_downloaded}
+                chown -R #{node['hive2']['user']}:#{node['hops']['group']} #{hive_downloaded}
         EOH
      not_if { ::File.exists?( "#{hive_downloaded}" ) }
 end
@@ -82,7 +83,7 @@ end
 
 directory "#{node['hive2']['hopsworks_jars']}" do 
   owner node['hive2']['user']
-  group node['hive2']['group']
+  group node['hops']['group']
   mode "0755"
   action :create
 end
@@ -106,7 +107,7 @@ remote_file "#{node['hive2']['hopsworks_jars']}/mysql-connector-java-#{node['hiv
   source node['hive2']['mysql_connector_url']
   checksum node['hive2']['mysql_connector_checksum']
   owner node['hive2']['user']
-  group node['hive2']['group']
+  group node['hops']['group']
   mode '0755'
   action :create_if_missing
 end
@@ -115,7 +116,7 @@ end
 remote_file "#{node['hive2']['hopsworks_jars']}/hudi-hadoop-mr-bundle-#{node['hive2']['hudi_version']}.jar" do
   source node['hive2']['hudi_hadoop_mr_bundle_url']
   owner node['hive2']['user']
-  group node['hive2']['group']
+  group node['hops']['group']
   mode '0644'
   action :create_if_missing
 end
@@ -125,7 +126,7 @@ base_package_filename = File.basename(node['hive2']['jmx']['prometheus_exporter'
 remote_file "#{node['hive2']['hopsworks_jars']}/#{base_package_filename}" do
   source node['hive2']['jmx']['prometheus_exporter']['url']
   owner node['hive2']['user']
-  group node['hive2']['group']
+  group node['hops']['group']
   mode '0755'
   action :create
 end

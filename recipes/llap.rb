@@ -1,7 +1,8 @@
 # Install Slider
-group node['slider']['group'] do
+group node['hops']['group'] do
+  gid node['hops']['group_id']
   action :create
-  not_if "getent group #{node['slider']['group']}"
+  not_if "getent group #{node['hops']['group']}"
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
@@ -14,7 +15,7 @@ user node['slider']['user'] do
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
-group node['slider']['group'] do
+group node['hops']['group'] do
   action :modify
   members ["#{node['slider']['user']}"]
   append true
@@ -37,7 +38,7 @@ slider_downloaded = "#{node['slider']['home']}/.slider_extracted_#{node['slider'
 
 bash 'extract-slider' do
         user "root"
-        group node['slider']['group']
+        group node['hops']['group']
         code <<-EOH
                 set -e
                 tar zxf #{cached_package_filename} -C /tmp
@@ -45,10 +46,10 @@ bash 'extract-slider' do
                 # remove old symbolic link, if any
                 rm -f #{node['slider']['base_dir']}
                 ln -s #{node['slider']['home']} #{node['slider']['base_dir']}
-                chown -R #{node['slider']['user']}:#{node['slider']['group']} #{node['slider']['home']}
-                chown -R #{node['slider']['user']}:#{node['slider']['group']} #{node['slider']['base_dir']}
+                chown -R #{node['slider']['user']}:#{node['hops']['group']} #{node['slider']['home']}
+                chown -R #{node['slider']['user']}:#{node['hops']['group']} #{node['slider']['base_dir']}
                 touch #{slider_downloaded}
-                chown -R #{node['slider']['user']}:#{node['slider']['group']} #{slider_downloaded}
+                chown -R #{node['slider']['user']}:#{node['hops']['group']} #{slider_downloaded}
         EOH
      not_if { ::File.exists?( "#{slider_downloaded}" ) }
 end

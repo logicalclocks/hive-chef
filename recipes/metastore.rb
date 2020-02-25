@@ -9,7 +9,7 @@ for d in tmp_dirs
   hops_hdfs_directory d do
     action :create_as_superuser
     owner node['hive2']['user']
-    group node['hive2']['group']
+    group node['hops']['group']
     mode "1755" #warehouse must be readable&executable for SparkSQL to read from Hive
     not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{d}"
   end
@@ -28,7 +28,7 @@ end
 hops_hdfs_directory "/user/#{node['hive2']['user']}" do
   action :create_as_superuser
   owner node['hive2']['user']
-  group node['hive2']['group']
+  group node['hops']['group']
   mode "1751"
   not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{"/user/#{node['hive2']['user']}"}"
 end
@@ -37,7 +37,7 @@ end
 hops_hdfs_directory node['hive2']['scratch_dir'] do
     action :create_as_superuser
     owner node['hive2']['user']
-    group node['hive2']['group']
+    group node['hops']['group']
     mode "1777" #scratchdir must be read/write/executable by everyone for SparkSQL user-jobs to write there
     not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{node['hive2']['scratch_dir']}"
 end
@@ -46,7 +46,7 @@ end
 template "#{node['hive2']['base_dir']}/bin/wiper.sh" do
   source "wiper.sh.erb"
   owner node['hive2']['user']
-  group node['hive2']['group']
+  group node['hops']['group']
   action :create
   mode 0700
 end
@@ -55,7 +55,7 @@ end
 cookbook_file "#{node['hive2']['conf_dir']}/hivemetastore.yaml" do
   source 'hivemetastore.yaml'
   owner node['hive2']['user']  
-  group node['hive2']['group'] 
+  group node['hops']['group'] 
   mode '0755'
   action :create
 end

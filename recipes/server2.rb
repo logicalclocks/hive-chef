@@ -4,7 +4,7 @@ include_recipe "hive2::_configure"
 cookbook_file "#{node['hive2']['conf_dir']}/hiveserver2.yaml" do
   source 'hiveserver2.yaml'
   owner node['hive2']['user']  
-  group node['hive2']['group'] 
+  group node['hops']['group'] 
   mode '0755'
   action :create
 end

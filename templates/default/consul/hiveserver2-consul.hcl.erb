@@ -1,0 +1,31 @@
+services = [
+    {
+        id = "hive/server2-ssl"
+        name = "hive"
+        tags = [
+            "hiveserver",
+            "hiveserver2",
+            "hiveserver2-tls"
+        ]
+        port = <%= node['hive2']['portssl'] %>
+        check = {
+            id = "hs2-health-check"
+            name = "Health check for Hive server"
+            args = ["<%= node['hive2']['consul'] %>/hiveserver2-health.sh"]
+            interval = "10s"
+            timeout = "5s"
+        }
+    },
+    {
+        id = "hive/server2-plain"
+        name = "hive"
+        tags = [
+            "hiveserver2-plain"
+        ]
+        port = <%= node['hive2']['port'] %>
+        check = {
+            id = "hs2-plain-health-check"
+            alias_service = "hive/server2-ssl"
+        }
+    }
+]

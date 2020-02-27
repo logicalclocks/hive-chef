@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+
+curl --fail --silent http://$HOSTNAME:<%= @port %> > /dev/null 2>&1

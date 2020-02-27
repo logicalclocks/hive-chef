@@ -60,3 +60,19 @@ if conda_helpers.is_upgrade
     action :systemd_reload
   end
 end  
+
+# Register Hive Server with Consul
+template "#{node['hive2']['consul']}/hiveserver2-health.sh" do
+  source "consul/hive-service-health.sh.erb"
+  owner node['hive2']['user']
+  group node['hops']['group']
+  variables({
+    :port => node['hive2']['hs2']['metrics_port']
+  })
+  mode 0750
+end
+
+consul_service "Registering Hive Server2 with Consul" do
+  service_definition "consul/hiveserver2-consul.hcl.erb"
+  action :register
+end

@@ -1,9 +1,3 @@
-my_ip = my_private_ip()
-nn_endpoint = private_recipe_ip("hops", "nn") + ":#{node['hops']['nn']['port']}"
-
-zk_ips = private_recipe_ips('kzookeeper', 'default')
-zk_endpoints = zk_ips.join(",")
-
 mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node['ndb']['mysql_port']}"
 
 # Logging
@@ -21,26 +15,38 @@ template "#{node['hive2']['conf_dir']}/hive-log4j2.properties" do
   mode "0655"
 end
 
-hopsworks_endpoint =
-if node.attribute? "hopsworks"
-  begin
-    if node['hopsworks'].attribute? "https" and node['hopsworks']['https'].attribute? "port"
-      hopsworks_endpoint = "https://" + private_recipe_ip("hopsworks", "default") + ":" + node['hopsworks']['https']['port']
-    else
-      hopsworks_endpoint = "https://" + private_recipe_ip("hopsworks", "default") + ":8181"
-    end
-  rescue
-    dashboard_endpoint = ""
+## Do not try to discover Hopsworks before it has been actual deployed
+## _configure recipe is included by hopsworks::default
+run_list = node.primary_runlist
+run_discovery_recipes = ['recipe[hive2::default]', 'recipe[hive2::metastore]', 'recipe[hive2::server2]']
+run_discovery = false
+for dr in run_discovery_recipes do
+  if run_list.include?(dr)
+    run_discovery = true
+    break
   end
 end
 
-
-begin
-  metastore_ip = private_recipe_ip("hive2", "metastore")
-rescue
-  metastore_ip = private_recipe_ip("hive2", "default")
-  Chef::Log.warn "Using default ip for metastore (metastore service not defined in cluster definition (yml) file."
+hopsworks_port = ""
+if run_discovery
+  ruby_block 'Discover Hopsworks port' do
+    block do
+      _, hopsworks_port = consul_helper.get_service("glassfish", ["http", "hopsworks"])
+      if hopsworks_port.nil?
+        raise "Could not get Hopsworks port from local Consul agent. Verify Hopsworks is running with service name: glassfish and tags: [http, hopsworks]"
+      end
+    end
+  end
 end
+
+hopsworks_fqdn = consul_helper.get_service_fqdn("http.glassfish")
+hopsworks_endpoint = "https://#{hopsworks_fqdn}:#{hopsworks_port}"
+
+nn_fqdn = consul_helper.get_service_fqdn("namenode")
+namenode_endpoint = "#{nn_fqdn}:#{node['hops']['nn']['port']}"
+
+zk_fqdn = consul_helper.get_service_fqdn("zookeeper")
+metastore_fqdn = consul_helper.get_service_fqdn("metastore.hive")
 
 magic_shell_environment 'HADOOP_HOME' do
   value "#{node['hops']['base_dir']}"
@@ -67,13 +73,14 @@ template "#{node['hive2']['conf_dir']}/hive-site.xml" do
   owner node['hive2']['user']
   group node['hops']['secure_group']
   mode 0650
-  variables({
-    :private_ip => my_ip,
-    :hopsworks_endpoint => hopsworks_endpoint,
-    :nn_endpoint => nn_endpoint,
-    :mysql_endpoint => mysql_endpoint,
-    :metastore_ip => metastore_ip,
-    :zk_endpoints => zk_endpoints
+  variables( lazy {
+    {
+      :hopsworks_endpoint => hopsworks_endpoint,
+      :nn_endpoint => namenode_endpoint,
+      :mysql_endpoint => mysql_endpoint,
+      :metastore_fqdn => metastore_fqdn,
+      :zk_fqdn => zk_fqdn
+    }
   })
   action :create
 end

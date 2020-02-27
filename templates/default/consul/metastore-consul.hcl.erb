@@ -1,0 +1,17 @@
+services = [
+    {
+        id = "hive/metastore"
+        name = "hive"
+        tags = [
+            "metastore"
+        ]
+        port = <%= node['hive2']['metastore']['port'] %>
+        check = {
+            id = "hm-health-check"
+            name = "Health check for Hive metastore"
+            args = ["<%= node['hive2']['consul'] %>/metastore-health.sh"]
+            interval = "10s"
+            timeout = "5s"
+        }
+    }
+]

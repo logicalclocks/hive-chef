@@ -16,6 +16,7 @@ depends          "conda"
 depends          "java"
 depends          "kzookeeper"
 depends          "magic_shell"
+depends          "consul"
 
 recipe           "install", "Installs a Hive2 Server"
 recipe           "default", "Starts both a Hive metastore and server2 and tez"

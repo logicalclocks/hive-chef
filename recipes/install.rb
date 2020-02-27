@@ -87,6 +87,13 @@ directory "#{node['hive2']['hopsworks_jars']}" do
   action :create
 end
 
+directory "#{node['hive2']['consul']}" do 
+  owner node['hive2']['user']
+  group node['hops']['group']
+  mode "0750"
+  action :create
+end
+
 # We create a symlink from within hive/lib that points to hive/hopsworks-jars so that all the custom libraries 
 # are transparently available without the need of fixing the classpaths.
 link "#{node['hive2']['lib_dir']}/hopsworks-jars" do

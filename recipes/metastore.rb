@@ -1,5 +1,15 @@
 include_recipe "hive2::_configure"
 
+unless exists_local("hive2", "server2")
+  crypto_dir = x509_helper.get_crypto_dir(node['hive2']['user'])
+  kagent_hopsify "Generate x.509" do
+    user node['hive2']['user']
+    crypto_directory crypto_dir
+    action :generate_x509
+    not_if { conda_helpers.is_upgrade || node["kagent"]["test"] == true }
+  end
+end
+
 private_ip = my_private_ip()
 public_ip = my_public_ip()
 

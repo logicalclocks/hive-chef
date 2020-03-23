@@ -1,5 +1,14 @@
 mysql_endpoint = "127.0.0.1:#{node['ndb']['mysql_port']}"
 
+# Add user hive to hadoop secure group as it needs access to ssl-server.xml
+# to read keymanagers reload interval
+group node['hops']['secure_group'] do
+  action :modify
+  members node['hive2']['user']
+  append true
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
+end
+
 # Logging
 directory "#{node['hive2']['logs_dir']}" do
   owner node['hive2']['user']

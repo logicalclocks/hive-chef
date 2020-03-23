@@ -1,5 +1,13 @@
 include_recipe "hive2::_configure"
 
+crypto_dir = x509_helper.get_crypto_dir(node['hive2']['user'])
+kagent_hopsify "Generate x.509" do
+  user node['hive2']['user']
+  crypto_directory crypto_dir
+  action :generate_x509
+  not_if { conda_helpers.is_upgrade || node["kagent"]["test"] == true }
+end
+
 # Template HiveServer2 for the JMX prometheus exporter
 cookbook_file "#{node['hive2']['conf_dir']}/hiveserver2.yaml" do
   source 'hiveserver2.yaml'

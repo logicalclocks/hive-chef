@@ -12,8 +12,8 @@ services = [
             id = "hs2-health-check"
             name = "Health check for Hive server"
             args = ["<%= node['hive2']['consul'] %>/hiveserver2-health.sh"]
-            interval = "10s"
-            timeout = "5s"
+            interval = "20s"
+            timeout = "20s"
         }
     },
     {

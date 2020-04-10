@@ -377,6 +377,11 @@
     <description>Enforce warehouse authority to be the same as the one specified in the metastore.warehouse.dir option</description>
   </property>
   <property>
+    <name>hive.warehouse.subdir.inherit.perms</name>
+    <value>true</value>
+    <description>Set this to false if the table directories should be created with the permissions derived from dfs umask instead of inheriting the permission of the warehouse or database directory.</description>
+  </property>
+  <property>
     <name>hive.metastore.uris</name>
     <value>thrift://<%= @metastore_fqdn %>:<%= node['hive2']['metastore']['port'] %></value>
     <description>Thrift URI for the remote metastore. Used by metastore client to connect to remote metastore.</description>

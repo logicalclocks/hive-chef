@@ -372,6 +372,11 @@
     <description>location of default database for the warehouse</description>
   </property>
   <property>
+    <name>metastore.warehouse.enforce.authority</name>
+    <value><%= node['hive2']['metastore']['enforce_authority'] %></value>
+    <description>Enforce warehouse authority to be the same as the one specified in the metastore.warehouse.dir option</description>
+  </property>
+  <property>
     <name>hive.metastore.uris</name>
     <value>thrift://<%= @metastore_fqdn %>:<%= node['hive2']['metastore']['port'] %></value>
     <description>Thrift URI for the remote metastore. Used by metastore client to connect to remote metastore.</description>

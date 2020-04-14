@@ -81,6 +81,10 @@ attribute "hive2/metastore/port",
           :description => "metastore port",
           :type => "string"
 
+attribute "hive2/metastore/enforce_authority",
+          :description => "Enforce warehouse authority to be the same as the one specified in the metastore.warehouse.dir option (default true)",
+          :type => "string"
+
 attribute "hive2/scratch_dir",
           :description => "Hive Tez Scratch dir location",
           :type => "string"

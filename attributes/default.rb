@@ -5,7 +5,7 @@ include_attribute "kzookeeper"
 
 default['hive2']['user']                    = node['install']['user'].empty? ? "hive" : node['install']['user']
 default['hive2']['group']                   = node['install']['user'].empty? ? node['hops']['group'] : node['install']['user']
-default['hive2']['version']                 = "3.0.0.3"
+default['hive2']['version']                 = "3.0.0.4"
 default['hive2']['url']                     = "#{node['download_url']}/apache-hive-#{node['hive2']['version']}-bin.tar.gz"
 default['hive2']['port']                    = "9084"
 default['hive2']['portssl']                 = "9085"
@@ -27,8 +27,9 @@ default['hive2']['mysql_connector_url']     = "#{node['download_url']}/mysql-con
 default['hive2']['mysql_connector_checksum'] = "32ddcf6d2613c79595f4f3fda01efb8620ea2bf50df954215c175ebec4cc67b9"
 
 
-default['hive2']['metastore']['port']       = "9083"
-default['hive2']['systemd']                 = "true"
+default['hive2']['metastore']['port']                    = "9083"
+default['hive2']['metastore']['enforce_authority']       = "true"
+default['hive2']['systemd']                              = "true"
 
 default['hive2']['hopsworks']['port']         = "8080"
 

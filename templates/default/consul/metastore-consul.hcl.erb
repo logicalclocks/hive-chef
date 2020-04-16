@@ -12,6 +12,7 @@ services = [
             args = ["<%= node['hive2']['consul'] %>/metastore-health.sh"]
             interval = "20s"
             timeout = "20s"
+            status = "passing"
         }
     }
 ]

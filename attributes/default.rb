@@ -17,7 +17,7 @@ default['hive2']['conf_dir']                = node['hive2']['base_dir'] + "/conf
 default['hive2']['lib_dir']                 = node['hive2']['base_dir'] + "/lib"
 default['hive2']['hopsworks_jars']          = node['hive2']['base_dir'] + "/hopsworks-jars"
 default['hive2']['consul']                  = node['hive2']['base_dir'] + "/consul"
-default['hive2']['hopsfs_dir']              = "/apps/hive"
+default['hive2']['hopsfs_dir']              = "#{node['hops']['hdfs']['apps_dir']}/hive"
 default['hive2']['scratch_dir']             = "/tmp/hive"
 
 default['hive2']['mysql_user']              = "hive"
@@ -40,7 +40,7 @@ default['tez']['url']                     = "#{node['download_url']}/apache-tez-
 default['tez']['dir']                     =  node['install']['dir'].empty? ? "/srv" : node['install']['dir']
 default['tez']['home']                    =  node['tez']['dir'] + "/apache-tez-" + node['tez']['version']
 default['tez']['base_dir']                =  node['tez']['dir'] + "/apache-tez"
-default['tez']['hopsfs_dir']              = "/apps/tez"
+default['tez']['hopsfs_dir']              = "#{node['hops']['hdfs']['apps_dir']}/tez"
 default['tez']['conf_dir']                =  node['tez']['base_dir'] + "/conf"
 
 default['slider']['user']                    =  node['install']['user'].empty? ? "slider" : node['install']['user']

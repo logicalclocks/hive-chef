@@ -14,5 +14,17 @@ services = [
             timeout = "20s"
             status = "passing"
         }
+    },
+    {
+        id = "hive/metastore/monitoring"
+        name = "hive"
+        tags = [
+            "monitoring"
+        ]
+        port = <%= node['hive2']['hm']['metrics_port'] %>
+        check = {
+            id = "hm-mon-health-check"
+            alias_service = "hive/metastore"
+        }
     }
 ]

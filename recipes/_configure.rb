@@ -1,4 +1,4 @@
-mysql_endpoint = private_recipe_ip("ndb", "mysqld") + ":#{node['ndb']['mysql_port']}"
+mysql_endpoint = "127.0.0.1:#{node['ndb']['mysql_port']}"
 
 # Logging
 directory "#{node['hive2']['logs_dir']}" do

@@ -37,7 +37,7 @@ services = [
         ]
         port = <%= node['hive2']['hs2']['metrics_port'] %>
         check = {
-            id = "hs2-plain-health-check"
+            id = "hs2-mon-health-check"
             alias_service = "hive/server2-ssl"
         }
     }

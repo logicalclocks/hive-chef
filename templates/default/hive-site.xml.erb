@@ -5379,4 +5379,8 @@
     <name>hive.superuser</name>
     <value><%= node['hive2']['user'] %></value>
   </property>
+  <property>
+    <name>hive.superuser.impersonation-users</name>
+    <value><%= node['hive2']['user'] %>,<%= node['hopsworks']['user'] %></value>
+  </property>
 </configuration>

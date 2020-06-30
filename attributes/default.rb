@@ -34,7 +34,7 @@ default['hive2']['systemd']                              = "true"
 default['hive2']['hopsworks']['port']         = "8080"
 
 default['tez']['user']                    =  node['install']['user'].empty? ? "tez" : node['install']['user']
-default['tez']['version']                 = "0.9.1.2"
+default['tez']['version']                 = "0.9.1.3"
 default['tez']['url']                     = "#{node['download_url']}/apache-tez-#{node['tez']['version']}.tar.gz"
 default['tez']['dir']                     =  node['install']['dir'].empty? ? "/srv" : node['install']['dir']
 default['tez']['home']                    =  node['tez']['dir'] + "/apache-tez-" + node['tez']['version']

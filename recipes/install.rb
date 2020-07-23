@@ -26,6 +26,14 @@ group node['hops']['group'] do
   not_if { node['install']['external_users'].casecmp("true") == 0 }
 end
 
+group node["kagent"]["certs_group"] do
+  action :manage
+  append true
+  excluded_members node['hive2']['user']
+  not_if { node['install']['external_users'].casecmp("true") == 0 }
+  only_if { conda_helpers.is_upgrade }
+end
+
 package_url = "#{node['hive2']['url']}"
 base_package_filename = File.basename(package_url)
 cached_package_filename = "/tmp/#{base_package_filename}"

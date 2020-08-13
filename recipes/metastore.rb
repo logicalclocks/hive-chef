@@ -6,7 +6,7 @@ unless exists_local("hive2", "server2")
     user node['hive2']['user']
     crypto_directory crypto_dir
     action :generate_x509
-    not_if { conda_helpers.is_upgrade || node["kagent"]["test"] == true }
+    not_if { conda_helpers.is_upgrade || node["kagent"]["enabled"].eql? "false" }
   end
 end
 

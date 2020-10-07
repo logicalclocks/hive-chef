@@ -12,6 +12,7 @@ ExecStart = <%= node['hive2']['base_dir'] %>/bin/hiveserver2
 LimitNOFILE = 20000
 TimeoutSec= 10min
 Restart=on-failure
+RestartSec=2
 
 Type = simple
 

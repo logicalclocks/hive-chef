@@ -42,17 +42,6 @@ default['tez']['base_dir']                =  node['tez']['dir'] + "/apache-tez"
 default['tez']['hopsfs_dir']              = "#{node['hops']['hdfs']['apps_dir']}/tez"
 default['tez']['conf_dir']                =  node['tez']['base_dir'] + "/conf"
 
-default['slider']['user']                    =  node['install']['user'].empty? ? "slider" : node['install']['user']
-default['slider']['version']                 = "0.93.1-incubating-SNAPSHOT"
-default['slider']['url']                     = "#{node['download_url']}/slider-#{node['slider']['version']}-all.tar.gz"
-default['slider']['dir']                     =  node['install']['dir'].empty? ? "/srv" : node['install']['dir']
-default['slider']['home']                    =  node['slider']['dir'] + "/apache-slider-" + node['slider']['version']
-default['slider']['base_dir']                =  node['slider']['dir'] + "/apache-slider"
-
-default['hive2']['execution_mode']         = "llap"
-default['llap']['cluster_name']            = "hops-llap"
-default['llap']['execution_mode']          = "none"
-
 default['tez']['session_per_queue']     = 100
 
 default['hive2']['conf']['mapreduce_input_size']     = "134217728"

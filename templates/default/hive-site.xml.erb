@@ -4194,7 +4194,7 @@
   </property>
   <property>
     <name>hive.execution.mode</name>
-    <value><%= node['hive2']['execution_mode'] %></value>
+    <value>container</value>
     <description>
       Expects one of [container, llap].
       Chooses whether query fragments will run in container or in llap
@@ -4797,7 +4797,7 @@
   </property>
   <property>
     <name>hive.llap.execution.mode</name>
-    <value><%= node['llap']['execution_mode'] %></value>
+    <value>none</value>
     <description>
       Expects one of [auto, none, all, map, only].
       Chooses whether query fragments will run in container or in llap
@@ -5005,7 +5005,7 @@
   </property>
   <property>
     <name>hive.llap.daemon.service.hosts</name>
-    <value>@<%= node['llap']['cluster_name'] %></value>
+    <value/>
     <description>
       Explicitly specified hosts to use for LLAP scheduling. Useful for testing. By default,
       YARN registry is used.

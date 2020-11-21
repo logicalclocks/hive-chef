@@ -26,7 +26,6 @@ recipe           "default", "Starts both a Hive metastore and server2 and tez"
 recipe           "metastore", "Starts  a Hive Metastore Server"
 recipe           "server2", "Starts  a Hive Server2"
 recipe           "tez", "Install Tez"
-recipe           "llap", "Deploy LLAP daemons"
 recipe           "purge", "Removes and deletes an installed Hive Server"
 
 attribute "hive2/user",
@@ -103,10 +102,6 @@ attribute "install/user",
 
 attribute "tez/user",
           :description => "User to install/run tez as",
-          :type => 'string'
-
-attribute "slider/user",
-          :description => "User to install/run slider as",
           :type => 'string'
 
 attribute "hive2/hudi_hadoop_mr_bundle_url",

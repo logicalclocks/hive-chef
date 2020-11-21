@@ -18,6 +18,3 @@ dependencies:
     global:
       - hive2::server2
       - hops::dn
-  - recipe: hive2::llap
-    global:
-      - hive2::tez

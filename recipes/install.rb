@@ -42,11 +42,16 @@ directory node['data']['dir'] do
   not_if { ::File.directory?(node['data']['dir']) }
 end
 
+directory node['hive2']['data_volume']['root_dir'] do
+  owner node['hive2']['user']
+  group node['hops']['group']
+  mode '0775'
+end
+
 directory node['hive2']['data_volume']['logs_dir'] do
   owner node['hive2']['user']
   group node['hops']['group']
   mode '0775'
-  recursive true
 end
 
 package_url = "#{node['hive2']['url']}"

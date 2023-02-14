@@ -38,6 +38,16 @@
     <type>integer</type>
   </property>
 
+  <!-- Number of tasks in mapper --> 
+  <property>
+    <name>tez.grouping.min-size</name>
+    <value>16000000</value>
+  </property>
+  <property>
+    <name>tez.grouping.max-size</name>
+    <value>256000000</value>
+  </property>
+
   <property>
     <name>tez.dag.recovery.flush.interval.secs</name>
     <defaultValue>30</defaultValue>

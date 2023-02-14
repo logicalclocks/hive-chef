@@ -150,7 +150,7 @@
   </property>
   <property>
     <name>hive.exec.reducers.bytes.per.reducer</name>
-    <value>256000000</value>
+    <value>128000000</value>
     <description>size per reducer.The default is 256Mb, i.e if the input size is 1G, it will use 4 reducers.</description>
   </property>
   <property>
@@ -4452,7 +4452,7 @@
   </property>
   <property>
     <name>hive.tez.auto.reducer.parallelism</name>
-    <value>false</value>
+    <value>true</value>
     <description>
       Turn on Tez' auto reducer parallelism feature. When enabled, Hive will still estimate data sizes
       and set parallelism estimates. Tez will sample source vertices' output sizes and adjust the estimates at runtime as

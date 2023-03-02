@@ -66,7 +66,6 @@ hopsworks_endpoint = "https://#{hopsworks_fqdn}:#{hopsworks_port}"
 nn_fqdn = consul_helper.get_service_fqdn("namenode")
 namenode_endpoint = "#{nn_fqdn}:#{node['hops']['nn']['port']}"
 
-zk_fqdn = consul_helper.get_service_fqdn("zookeeper")
 metastore_fqdn = consul_helper.get_service_fqdn("metastore.hive")
 
 magic_shell_environment 'HADOOP_HOME' do
@@ -99,8 +98,7 @@ template "#{node['hive2']['conf_dir']}/hive-site.xml" do
       :hopsworks_endpoint => hopsworks_endpoint,
       :nn_endpoint => namenode_endpoint,
       :mysql_endpoint => mysql_endpoint,
-      :metastore_fqdn => metastore_fqdn,
-      :zk_fqdn => zk_fqdn
+      :metastore_fqdn => metastore_fqdn
     }
   })
   action :create

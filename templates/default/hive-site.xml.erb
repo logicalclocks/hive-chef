@@ -276,11 +276,6 @@
     </description>
   </property>
   <property>
-    <name>hive.lockmgr.zookeeper.default.partition.name</name>
-    <value>__HIVE_DEFAULT_ZOOKEEPER_PARTITION__</value>
-    <description/>
-  </property>
-  <property>
     <name>hive.exec.show.job.failure.debug.info</name>
     <value>true</value>
     <description>
@@ -566,33 +561,6 @@
     <name>hive.cluster.delegation.token.store.class</name>
     <value>org.apache.hadoop.hive.thrift.MemoryTokenStore</value>
     <description>The delegation token store implementation. Set to org.apache.hadoop.hive.thrift.ZooKeeperTokenStore for load-balanced cluster.</description>
-  </property>
-  <property>
-    <name>hive.cluster.delegation.token.store.zookeeper.connectString</name>
-    <value/>
-    <description>
-      The ZooKeeper token store connect string. You can re-use the configuration value
-      set in hive.zookeeper.quorum, by leaving this parameter unset.
-    </description>
-  </property>
-  <property>
-    <name>hive.cluster.delegation.token.store.zookeeper.znode</name>
-    <value>/hivedelegation</value>
-    <description>
-      The root path for token store data. Note that this is used by both HiveServer2 and
-      MetaStore to store delegation Token. One directory gets created for each of them.
-      The final directory names would have the servername appended to it (HIVESERVER2,
-      METASTORE).
-    </description>
-  </property>
-  <property>
-    <name>hive.cluster.delegation.token.store.zookeeper.acl</name>
-    <value/>
-    <description>
-      ACL for token store entries. Comma separated list of ACL entries. For example:
-      sasl:hive/host1@MY.DOMAIN:cdrwa,sasl:hive/host2@MY.DOMAIN:cdrwa
-      Defaults to all permissions for the hiveserver2/metastore process user.
-    </description>
   </property>
   <property>
     <name>hive.metastore.cache.pinobjtypes</name>
@@ -2541,7 +2509,7 @@
   </property>
   <property>
     <name>hive.support.concurrency</name>
-    <value>true</value>
+    <value>false</value>
     <description>
       Whether Hive supports concurrency control or not.
       A ZooKeeper instance must be up and running when using zookeeper Hive lock manager
@@ -2577,61 +2545,6 @@
     <description>
       This param is to control whether or not only do lock on queries
       that need to execute at least one mapred job.
-    </description>
-  </property>
-  <property>
-    <name>hive.zookeeper.quorum</name>
-    <value><%= @zk_fqdn %></value>
-    <description>
-      List of ZooKeeper servers to talk to. This is needed for:
-      1. Read/write locks - when hive.lock.manager is set to
-      org.apache.hadoop.hive.ql.lockmgr.zookeeper.ZooKeeperHiveLockManager,
-      2. When HiveServer2 supports service discovery via Zookeeper.
-      3. For delegation token storage if zookeeper store is used, if
-      hive.cluster.delegation.token.store.zookeeper.connectString is not set
-      4. LLAP daemon registry service
-    </description>
-  </property>
-  <property>
-    <name>hive.zookeeper.client.port</name>
-    <value><%= node['kzookeeper']['config']['clientPort'] %></value>
-    <description>
-      The port of ZooKeeper servers to talk to.
-      If the list of Zookeeper servers specified in hive.zookeeper.quorum
-      does not contain port numbers, this value is used.
-    </description>
-  </property>
-  <property>
-    <name>hive.zookeeper.session.timeout</name>
-    <value>1200000ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      ZooKeeper client's session timeout (in milliseconds). The client is disconnected, and as a result, all locks released,
-      if a heartbeat is not sent in the timeout.
-    </description>
-  </property>
-  <property>
-    <name>hive.zookeeper.namespace</name>
-    <value>hive_zookeeper_namespace</value>
-    <description>The parent node under which all ZooKeeper nodes are created.</description>
-  </property>
-  <property>
-    <name>hive.zookeeper.clean.extra.nodes</name>
-    <value>false</value>
-    <description>Clean extra nodes at the end of the session.</description>
-  </property>
-  <property>
-    <name>hive.zookeeper.connection.max.retries</name>
-    <value>3</value>
-    <description>Max number of times to retry when connecting to the ZooKeeper server.</description>
-  </property>
-  <property>
-    <name>hive.zookeeper.connection.basesleeptime</name>
-    <value>1000ms</value>
-    <description>
-      Expects a time value with unit (d/day, h/hour, m/min, s/sec, ms/msec, us/usec, ns/nsec), which is msec if not specified.
-      Initial amount of time (in milliseconds) to wait between retries
-      when connecting to the ZooKeeper server when using ExponentialBackoffRetry policy.
     </description>
   </property>
   <property>
@@ -3499,16 +3412,6 @@
     <name>hive.server2.support.dynamic.service.discovery</name>
     <value>false</value>
     <description>Whether HiveServer2 supports dynamic service discovery for its clients. To support this, each instance of HiveServer2 currently uses ZooKeeper to register itself, when it is brought up. JDBC/ODBC clients should use the ZooKeeper ensemble: hive.zookeeper.quorum in their connection string.</description>
-  </property>
-  <property>
-    <name>hive.server2.zookeeper.namespace</name>
-    <value>hiveserver2</value>
-    <description>The parent node in ZooKeeper used by HiveServer2 when supporting dynamic service discovery.</description>
-  </property>
-  <property>
-    <name>hive.server2.zookeeper.publish.configs</name>
-    <value>true</value>
-    <description>Whether we should publish HiveServer2's configs to ZooKeeper.</description>
   </property>
   <property>
     <name>hive.server2.global.init.file.location</name>
@@ -5029,14 +4932,6 @@
       Minimum time after which a previously disabled node will be re-enabled for scheduling,
       in milliseconds. This may be modified by an exponential back-off if failures persist.
     </description>
-  </property>
-  <property>
-    <name>hive.llap.zk.registry.user</name>
-     <value><%= node['hive2']['user'] %></value>
-     <description>
-       In the LLAP ZooKeeper-based registry, specifies the username in the Zookeeper path.
-       This should be the hive user or whichever user is running the LLAP daemon.
-     </description>
   </property>
   <property>
     <name>hive.llap.task.scheduler.node.reenable.max.timeout.ms</name>

@@ -1,7 +1,6 @@
 include_attribute "kagent"
 include_attribute "ndb"
 include_attribute "hops"
-include_attribute "kzookeeper"
 
 default['hive2']['user']                    = node['install']['user'].empty? ? "hive" : node['install']['user']
 default['hive2']['user_id']                 = '1516'

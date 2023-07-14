@@ -17,7 +17,6 @@ depends 'hops'
 depends 'ndb'
 depends 'conda'
 depends 'consul'
-depends 'ulimit'
 depends 'java'
 
 

@@ -19,7 +19,7 @@ default['hive2']['lib_dir']                 = node['hive2']['base_dir'] + "/lib"
 default['hive2']['hopsworks_jars']          = node['hive2']['base_dir'] + "/hopsworks-jars"
 default['hive2']['consul']                  = node['hive2']['base_dir'] + "/consul"
 default['hive2']['hopsfs_dir']              = "#{node['hops']['hdfs']['apps_dir']}/hive"
-default['hive2']['scratch_dir']             = "/tmp/hive"
+default['hive2']['scratch_dir']             = "${system:java.io.tmpdir}/hive"
 
 # Data volume directories
 default['hive2']['data_volume']['root_dir'] = "#{node['data']['dir']}/apache-hive"

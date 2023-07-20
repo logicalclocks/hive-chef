@@ -74,7 +74,7 @@
   </property>
   <property>
     <name>hive.downloaded.resources.dir</name>
-    <value>${system:java.io.tmpdir}/hive/${hive.session.id}_resources</value>
+    <value>/tmp/hive/${hive.session.id}_resources</value>
     <description>Temporary local directory for added resources in the remote file system.</description>
   </property>
   <property>
@@ -4540,7 +4540,7 @@
   </property>
   <property>
     <name>hive.llap.io.allocator.mmap.path</name>
-    <value>${system:java.io.tmpdir}</value>
+    <value>/tmp</value>
     <description>
       Expects a writable directory on the local filesystem.
       The directory location for mapping NVDIMM/NVMe flash storage into the ORC low-level cache.

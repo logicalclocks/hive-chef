@@ -1,4 +1,4 @@
-include_recipe "hive2::_configure"
+include_recipe "hive2::db"
 
 unless exists_local("hive2", "server2")
   crypto_dir = x509_helper.get_crypto_dir(node['hive2']['user'])

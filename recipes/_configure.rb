@@ -36,28 +36,9 @@ template "#{node['hive2']['conf_dir']}/hive-log4j2.properties" do
   mode "0655"
 end
 
-## Do not try to discover Hopsworks before it has been actual deployed
-## _configure recipe is included by hopsworks::default
-run_list = node.primary_runlist
-run_discovery_recipes = ['recipe[hive2::default]', 'recipe[hive2::metastore]', 'recipe[hive2::server2]']
-run_discovery = false
-for dr in run_discovery_recipes do
-  if run_list.include?(dr)
-    run_discovery = true
-    break
-  end
-end
-
-hopsworks_port = ""
-if run_discovery
-  ruby_block 'Discover Hopsworks port' do
-    block do
-      _, hopsworks_port = consul_helper.get_service("glassfish", ["http", "hopsworks"])
-      if hopsworks_port.nil?
-        raise "Could not get Hopsworks port from local Consul agent. Verify Hopsworks is running with service name: glassfish and tags: [http, hopsworks]"
-      end
-    end
-  end
+hopsworks_port = "8182"
+if node['hopsworks'].attribute?('internal') and node['hopsworks']['internal'].attribute?('port')
+  hopsworks_port = node['hopsworks']['internal']['port']
 end
 
 hopsworks_fqdn = consul_helper.get_service_fqdn("http.glassfish")

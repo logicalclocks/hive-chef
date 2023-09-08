@@ -50,20 +50,22 @@ bash 'extract-tez' do
      not_if { ::File.exists?( "#{tez_downloaded}" ) }
 end
 
-hops_hdfs_directory node['tez']['hopsfs_dir'] do
-  action :create_as_superuser
-  owner node['tez']['user']
-  group node['hops']['group']
-  mode "1775"
-  not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{node['tez']['hopsfs_dir']}"
-end
-
-hops_hdfs_directory cached_package_filename do
-  action :put_as_superuser
-  owner node['hops']['hdfs']['user']
-  group node['hops']['group']
-  dest "#{node['tez']['hopsfs_dir']}/#{base_package_filename}"
-  mode "775"
+if node["install"]["secondary_region"].casecmp?("false")
+  hops_hdfs_directory node['tez']['hopsfs_dir'] do
+    action :create_as_superuser
+    owner node['tez']['user']
+    group node['hops']['group']
+    mode "1775"
+    not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{node['tez']['hopsfs_dir']}"
+  end
+  
+  hops_hdfs_directory cached_package_filename do
+    action :put_as_superuser
+    owner node['hops']['hdfs']['user']
+    group node['hops']['group']
+    dest "#{node['tez']['hopsfs_dir']}/#{base_package_filename}"
+    mode "775"
+  end
 end
 
 # Create configuration file

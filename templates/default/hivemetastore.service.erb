@@ -5,7 +5,13 @@ After = syslog.target network.target remote-fs.target <%= @deps %>
 #restartSec is 2 so the service restart ever 13s
 #a maximum burst of 47 in 11min guaranty that it will at least try for 10min (47*13=611~10,2min)
 StartLimitIntervalSec=660
-StartLimitBurst=47
+<% if node['hops']['alive-watchdog']['enabled'].casecmp?("true") -%>
+# Do not be very strict as it is normal for the service to fail and restart immediatelly
+# when liveness watchdog is enabled
+StartLimitBurst=350
+<% else -%>
+StartLimitBurst=18
+<% end -%>
 
 [Service]
 User = <%= node['hive2']['user'] %>

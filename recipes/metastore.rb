@@ -12,9 +12,6 @@ unless exists_local("hive2", "server2")
   end
 end
 
-private_ip = my_private_ip()
-public_ip = my_public_ip()
-
 # Create hive apps and warehouse dirs
 if node["install"]["secondary_region"].casecmp?("false")
   tmp_dirs = [node['hive2']['hopsfs_dir'] , node['hive2']['hopsfs_dir'] + "/warehouse"]
@@ -26,16 +23,6 @@ if node["install"]["secondary_region"].casecmp?("false")
       mode "1755" #warehouse must be readable&executable for SparkSQL to read from Hive
       not_if ". #{node['hops']['home']}/sbin/set-env.sh && #{node['hops']['home']}/bin/hdfs dfs -test -d #{d}"
     end
-  end
-
-  bash "set_warehouse_storage_type" do
-    user node['hops']['hdfs']['user']
-    group node['hops']['group']
-    code <<-EOH
-      #{node['hops']['bin_dir']}/hdfs storagepolicies -setStoragePolicy -path #{node['hive2']['hopsfs_dir']}/warehouse -policy DB
-    EOH
-    action :run
-    not_if { node['hops']['enable_cloud_storage'].casecmp?("true") } 
   end
 
   # Create hive user-dir on hdfs
